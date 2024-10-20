@@ -4,10 +4,11 @@
 NARRATION_FILE_PATH=${1:-"${PWD}/data/src/sample/narration.csv"}
 WAV_LIST_FILE_PATH=${2:-/tmp/wav_list_for_ffmpeg.txt}
 SOUND_DIR=${3:-/tmp/sound/}
-line_number=0
+LINE_NUMBER=0
 
 
-declare -A mappings=(
+#
+declare -A NARRATOR_LIST=(
   [fc]="Japanese Female Child"
   [m1]="Japanese Male 1"
   [m2]="Japanese Male 2"
@@ -22,19 +23,20 @@ mkdir -p $SOUND_DIR
 
 # CSVファイルを行ごとに処理
 cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
+  # 空行と#から始まるコメント行は無視
   if [[ -z "$type" || "$type" == \#* ]]; then
-  continue
+    continue
   fi
 
   # 行数をインクリメント
-  ((line_number++))
+  ((LINE_NUMBER++))
   case $type in
     speak)
-      OUTPUT_FILE=$(printf "%s%03d_%s.wav" $SOUND_DIR "$line_number" "$arg4")
-      OUTPUT_FILE=$(printf "%s%03d_.wav" $SOUND_DIR "$line_number")
+      OUTPUT_FILE=$(printf "%s%03d_%s.wav" $SOUND_DIR "$LINE_NUMBER" "$arg4")
+      OUTPUT_FILE=$(printf "%s%03d_.wav" $SOUND_DIR "$LINE_NUMBER")
       _NARRATOR=$arg1
-      if [[ -n "${mappings[$_NARRATOR]}" ]]; then
-          NARRATOR=${mappings[$_NARRATOR]}
+      if [[ -n "${NARRATOR_LIST[$_NARRATOR]}" ]]; then
+          NARRATOR=${NARRATOR_LIST[$_NARRATOR]}
       else
           echo "未対応のナレーター: $_NARRATOR"
 	  exit 1
@@ -61,7 +63,7 @@ cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
 
     silent)
       SILENT_TIME_S=$arg1
-      OUTPUT_FILE=$(printf "%s%03d_silent_%ds.wav" $SOUND_DIR "$line_number" "$SILENT_TIME_S")
+      OUTPUT_FILE=$(printf "%s%03d_silent_%ds.wav" $SOUND_DIR "$LINE_NUMBER" "$SILENT_TIME_S")
       #ffmpeg -f f32le -ar 48000 -ac 1 -i /dev/zero -t $SILENT_TIME_S $OUTPUT_FILE || true
       sox -n -r 48000 -c 1 $OUTPUT_FILE trim 0 $SILENT_TIME_S
       echo "file '$OUTPUT_FILE'" >> $WAV_LIST_FILE_PATH
