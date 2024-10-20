@@ -19,3 +19,4 @@ echo "作成したタイトル動画: $TITLE_MOVIE_FILE_PATH"
 
 # tmpディレクトリのクリーンアップ
 rm ./data/tmp/tmp/*
+
