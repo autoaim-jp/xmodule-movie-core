@@ -1,0 +1,8 @@
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/001_.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/002_.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/003_.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/004_silent_1s.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/005_silent_2s.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/006_.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/007_.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/tmp/sound/20241020_232644/008_.wav'
