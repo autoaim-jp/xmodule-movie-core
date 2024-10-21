@@ -1,6 +1,6 @@
 # 2024/10/20
-# type,arg1,arg2,arg3...
-# speak,f1,150,こんにちは
+# type,arg1,arg2,arg3,arg4
+# speak,f1,150,happy=0,こんにちは
 # silent,3
 speak,f1,150,happy=0,こんにちは
 speak,m2,100,happy=0,ハロー1
