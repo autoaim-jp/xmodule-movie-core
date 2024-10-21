@@ -1,6 +1,6 @@
 # 2024/10/22 balance-sheet.xlogin.jp
 # type,arg1,arg2,arg3,arg4
-# speak,f1,150,happy=0,こんにちは
+# speak,f1,100,happy=0,こんにちは
 # silent,3
 silent,2
 speak,f1,150,happy=0,こんにちは。本日は、財務情報をグラフ化して管理できるWebサービスを紹介します。
