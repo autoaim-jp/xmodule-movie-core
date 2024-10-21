@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CAPTURE_MOVIE_FILE_PATH=${1:-"${PWD}/data/src/sample/capture.mp4"}
-SUBTITLE_TEXT_FILE_PATH=${2:-"${PWD}/data/src/sample/subtitle.csv"}
+CAPTURE_MOVIE_FILE_PATH=${1:-"${PWD}/data/src/project/sample/capture.mp4"}
+SUBTITLE_TEXT_FILE_PATH=${2:-"${PWD}/data/src/project/sample/subtitle.csv"}
 SUBTITLE_MOVIE_FILE_PATH=${3:-/tmp/subtitle.mp4}
 
 # 字幕ファイルを1行ずつ読み込んで字幕フィルタを作成
