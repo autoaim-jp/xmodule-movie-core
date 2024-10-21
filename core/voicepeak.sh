@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # CSVファイル名
-NARRATION_FILE_PATH=${1:-"${PWD}/data/src/sample/narration.csv"}
+NARRATION_FILE_PATH=${1:-"${PWD}/data/src/project/sample/narration.csv"}
 WAV_LIST_FILE_PATH=${2:-/tmp/wav_list_for_ffmpeg.txt}
 SOUND_DIR=${3:-/tmp/sound/}
 LINE_NUMBER=0
