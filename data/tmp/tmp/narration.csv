@@ -1,0 +1,4 @@
+speak,fc,150,happy=0,テストです。
+silent,1
+speak,f1,100,happy=0,眠いです。
+speak,fc,150,happy=50,テストです。

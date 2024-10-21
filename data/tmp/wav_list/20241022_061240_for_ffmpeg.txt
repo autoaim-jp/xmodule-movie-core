@@ -1,0 +1,4 @@
+file '/home/tokayupcg/list/simple/demo-video-creator/data/generated/sound/speak_fc_150_happy=0_テストです。.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/generated/sound/silent_1___.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/generated/sound/speak_f1_100_happy=0_眠いです。.wav'
+file '/home/tokayupcg/list/simple/demo-video-creator/data/generated/sound/speak_fc_150_happy=50_テストです。.wav'
