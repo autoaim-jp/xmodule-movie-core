@@ -87,5 +87,8 @@ cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   # 音声ファイルをwavリストに追記
   echo "file '$OUTPUT_FILE_PATH'" >> $WAV_LIST_FILE_PATH
 
+  # 音声ファイルの長さを表示
+  echo $(soxi -D $OUTPUT_FILE_PATH) $OUTPUT_FILE_PATH
+
 done
 
