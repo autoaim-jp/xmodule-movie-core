@@ -6,3 +6,5 @@ CONCAT_SOUND_FILE_PATH=${2:-/tmp/concat.wav}
 # テキストファイル内のwavファイルを順に結合
 ffmpeg -f concat -safe 0 -i $WAV_LIST_FILE_PATH -c copy $CONCAT_SOUND_FILE_PATH > /dev/null 2>&1
 
+# 結合したwavファイルの長さを表示
+echo "結合したwavファイルの長さ: $(soxi -d $CONCAT_SOUND_FILE_PATH) または $(soxi -D $CONCAT_SOUND_FILE_PATH) 秒"
