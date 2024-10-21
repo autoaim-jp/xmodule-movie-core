@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# CSVファイル名
 NARRATION_FILE_PATH=${1:-"${PWD}/data/src/project/sample/narration.csv"}
 WAV_LIST_FILE_PATH=${2:-/tmp/wav_list_for_ffmpeg.txt}
 SOUND_DIR=${3:-/tmp/sound/}
 LINE_NUMBER=0
 
 
-#
+# ナレーターの変換用
 declare -A NARRATOR_LIST=(
   [fc]="Japanese Female Child"
   [m1]="Japanese Male 1"
@@ -17,6 +16,39 @@ declare -A NARRATOR_LIST=(
   [f2]="Japanese Female 2"
   [f3]="Japanese Female 3"
 )
+
+# 音声ファイルを作成
+function _speak() {
+  sleep 1
+  OUTPUT_FILE_PATH=$1
+  _NARRATOR=$2
+  SPEED=$3
+  EMOTION_EXPR=$4
+  TEXT=$5
+  echo $OUTPUT_FILE_PATH
+  if [[ -n "${NARRATOR_LIST[$_NARRATOR]}" ]]; then
+      NARRATOR=${NARRATOR_LIST[$_NARRATOR]}
+  else
+      echo "未対応のナレーター: $_NARRATOR"
+	  exit 1
+  fi
+
+  ~/application/Voicepeak/voicepeak -o $OUTPUT_FILE_PATH -n "$NARRATOR" --speed $SPEED -e "$EMOTION_EXPR" -s "$TEXT" 2>/dev/null
+  if [[ $? -eq 0 ]]; then
+    echo "音声ファイルの作成に成功。"
+    return 0
+  else
+    echo "音声ファイルの作成に失敗しました。再度生成します。"
+    echo "$OUTPUT_FILE_PATH,$_NARRATOR,$NARRATOR,$SPEED,$EMOTION_EXPR,$TEXT"
+    sleep 3
+    ~/application/Voicepeak/voicepeak -o $OUTPUT_FILE_PATH -n "$NARRATOR" --speed $SPEED -e "$EMOTION_EXPR" -s "$TEXT" 2>/dev/null
+    if [[ $? -ne 0 ]]; then
+      echo "音声ファイルの作成に失敗しました。終了します。"
+      return 1
+    fi
+    return 0
+  fi
+}
 
 # サウンドディレクトリを作成
 mkdir -p $SOUND_DIR
@@ -30,50 +62,30 @@ cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
 
   # 行数をインクリメント
   ((LINE_NUMBER++))
-  case $type in
-    speak)
-      OUTPUT_FILE=$(printf "%s%03d_%s.wav" $SOUND_DIR "$LINE_NUMBER" "$arg4")
-      OUTPUT_FILE=$(printf "%s%03d_.wav" $SOUND_DIR "$LINE_NUMBER")
-      _NARRATOR=$arg1
-      if [[ -n "${NARRATOR_LIST[$_NARRATOR]}" ]]; then
-          NARRATOR=${NARRATOR_LIST[$_NARRATOR]}
-      else
-          echo "未対応のナレーター: $_NARRATOR"
-	  exit 1
-      fi
-      SPEED=$arg2
-      EMOTION_EXPR=$arg3
-      TEXT=$arg4
-      sleep 1
-      ~/application/Voicepeak/voicepeak -o $OUTPUT_FILE -n "$NARRATOR" --speed $SPEED -e "$EMOTION_EXPR" -s "$TEXT" 2>/dev/null
-      if [[ $? -eq 0 ]]; then
-        echo "音声ファイルの作成に成功。"
-        echo "file '$OUTPUT_FILE'" >> $WAV_LIST_FILE_PATH
-      else
-        echo "音声ファイルの作成に失敗しました。再度生成します。"
-	echo $type,$arg1,$arg2,$arg3,$arg4
-	sleep 3
-        ~/application/Voicepeak/voicepeak -o $OUTPUT_FILE -n "$NARRATOR" --speed $SPEED -e "$EMOTION_EXPR" -s "$TEXT"
-        if [[ $? -ne 0 ]]; then
-          echo "音声ファイルの作成に失敗しました。終了します。"
-	  exit 1
-	fi
-        echo "file '$OUTPUT_FILE'" >> $WAV_LIST_FILE_PATH
-      fi
-      ;;
+  # 音声ファイル名 すでに存在していれば利用 なければ作成 ファイル名を安全にするためシェルの特殊文字とスラッシュをアンダースコアで置換
+  OUTPUT_FILE_NAME=$(printf "%s_%s_%s_%s_%s.wav" "$type" "$arg1" "$arg2" "$arg3" "$arg4" | sed 's/[*?[\]{}()&|;<>`"'"'"'\\$#\/]/_/g')
+  OUTPUT_FILE_PATH="${SOUND_DIR}${OUTPUT_FILE_NAME}"
 
-    silent)
+  # 音声ファイルがなければ作成
+  if [[ ! -f $OUTPUT_FILE_PATH ]]; then
+    if [[ $type == "speak" ]]; then
+      _speak $OUTPUT_FILE_PATH $arg1 $arg2 $arg3 $arg4
+    elif [[ $type == "silent" ]]; then
       SILENT_TIME_S=$arg1
-      OUTPUT_FILE=$(printf "%s%03d_silent_%ds.wav" $SOUND_DIR "$LINE_NUMBER" "$SILENT_TIME_S")
-      #ffmpeg -f f32le -ar 48000 -ac 1 -i /dev/zero -t $SILENT_TIME_S $OUTPUT_FILE || true
-      sox -n -r 48000 -c 1 $OUTPUT_FILE trim 0 $SILENT_TIME_S
-      echo "file '$OUTPUT_FILE'" >> $WAV_LIST_FILE_PATH
-      ;;
-
-    *)
+      sox -n -r 48000 -c 1 $OUTPUT_FILE_PATH trim 0 $SILENT_TIME_S >/dev/null 2>&1
+    else
       echo "未対応のtype: $type $arg1 $arg2 $arg3 $arg4"
-      # exit 1
-      ;;
-   esac
+      exit 1
+    fi
+  
+    # 音声ファイルが生成できなければ異常終了
+    if [[ ! -f $OUTPUT_FILE_PATH ]]; then
+      exit 1
+    fi
+  fi
+
+  # 音声ファイルをwavリストに追記
+  echo "file '$OUTPUT_FILE_PATH'" >> $WAV_LIST_FILE_PATH
+
 done
 
