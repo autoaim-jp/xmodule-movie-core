@@ -58,6 +58,7 @@ cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
           echo "音声ファイルの作成に失敗しました。終了します。"
 	  exit 1
 	fi
+        echo "file '$OUTPUT_FILE'" >> $WAV_LIST_FILE_PATH
       fi
       ;;
 
