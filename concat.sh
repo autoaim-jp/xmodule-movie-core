@@ -15,8 +15,7 @@ echo "タイトルとキャプチャの結合動画: $CONCAT_MOVIE_FILE_PATH"
 
 ./core/concatWavAndMovie.sh $CONCAT_SOUND_FILE_PATH $CONCAT_MOVIE_FILE_PATH $FINAL_MOVIE_FILE_PATH
 echo "動画と音声の結合結果: $FINAL_MOVIE_FILE_PATH"
-# debug
-xdg-open $FINAL_MOVIE_FILE_PATH
+# xdg-open $FINAL_MOVIE_FILE_PATH
 
 # tmpディレクトリのクリーンアップ
 rm ./data/tmp/tmp/*
