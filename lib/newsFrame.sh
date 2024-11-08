@@ -7,6 +7,7 @@ center_image=${PWD}/data/src/project/sample/asset/graph.png        # 中央に�
 subtitle_text="字幕の文章"           # 中央下に表示する文章
 bottom_left_image=${PWD}/data/src/project/sample/asset/woman_flop.png    # 左下に表示する画像
 
+right_top_image=${TMP_DIR}right_top.png
 FADE_MOVIE_PATH=${TMP_DIR}image_fade.mov
 OUTPUT_MOVIE_PATH=${TMP_DIR}output.mp4
 BASE_MOVIE_PATH=${TMP_DIR}base.mp4
@@ -27,17 +28,34 @@ left_bottom_image_height=151          # 左下画像の高さ
 # 背景が透明で、フェードイン、フェードアウトの動画パーツ
 ffmpeg -y -loop 1 -i $center_image -vf "scale=1200:800,format=rgba,fade=t=in:st=0:d=4:alpha=1,fade=t=out:st=6:d=4:alpha=1" -t 10 -c:v qtrle $FADE_MOVIE_PATH
 
-#    [bg_with_box]drawtext=text='デモ動画':fontcolor=white:fontsize=30:x=W-tw-30:y=30[bg_with_text]; \
+# 右上の画像作成
+convert -size 200x80 xc:none \
+    -fill "#f16529" -draw "roundrectangle 0,0 200,80 15,15" \
+    -gravity center \
+    -font "/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Regular.otf" \
+    -pointsize 20 -fill white -annotate 0 "研修くん" \
+    $right_top_image
 
 # FFmpegコマンド
-ffmpeg -y -i "$background_image" -i "$bottom_left_image" \
+# 右上に文字表示
+# ffmpeg -y -i "$background_image" -i "$bottom_left_image" \
+# -filter_complex "\
+#     [0:v]scale=${output_width}:${output_height}[bg]; \
+#     color=s=${right_top_box_width}x${right_top_box_height}:c=blue[box]; \
+#     [bg][box]overlay=x=W-w-10:y=20[bg_with_box]; \
+#     [bg_with_box]drawtext=text='デモ動画':fontcolor=white:fontsize=60:x=W-tw-40:y=40[bg_with_text]; \
+#     [1:v]scale=${left_bottom_image_width}:${left_bottom_image_height}[bottom_left_img]; \
+#     [bg_with_text][bottom_left_img]overlay=x=20:y=H-${left_bottom_image_height}-20" \
+# -c:v libx264 -t 10 -pix_fmt yuv420p $BASE_MOVIE_PATH
+
+# 右上に画像配置
+ffmpeg -y -i "$background_image" -i "$bottom_left_image" -i "$right_top_image" \
 -filter_complex "\
     [0:v]scale=${output_width}:${output_height}[bg]; \
-    color=s=${right_top_box_width}x${right_top_box_height}:c=blue[box]; \
-    [bg][box]overlay=x=W-w-10:y=20[bg_with_box]; \
-    [bg_with_box]drawtext=text='デモ動画':fontcolor=white:fontsize=60:x=W-tw-40:y=40[bg_with_text]; \
+    [2:v]scale=200:80[scaled_right_top_image]; \
+    [bg][scaled_right_top_image]overlay=x=W-w-10:y=20[bg_with_right_top_image]; \
     [1:v]scale=${left_bottom_image_width}:${left_bottom_image_height}[bottom_left_img]; \
-    [bg_with_text][bottom_left_img]overlay=x=20:y=H-${left_bottom_image_height}-20" \
+    [bg_with_right_top_image][bottom_left_img]overlay=x=20:y=H-${left_bottom_image_height}-20" \
 -c:v libx264 -t 10 -pix_fmt yuv420p $BASE_MOVIE_PATH
 
 # lib/fadeInOut.shと同じ
