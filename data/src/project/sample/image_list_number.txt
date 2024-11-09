@@ -1,7 +1,7 @@
 # find $(pwd)/data/src/project/sample/image_list_number/ -type f | sort
 6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0001.png
 6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0002.png
-6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0003.png
+# 6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0003.png
 # 6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0004.png
 # 6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0005.png
 # 6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0006.png

@@ -12,8 +12,11 @@ right_top_image=${TMP_DIR}right_top.png
 FADE_MOVIE_PATH=${TMP_DIR}image_fade.mov
 OUTPUT_MOVIE_PATH=${TMP_DIR}output.mp4
 BASE_MOVIE_PATH=${TMP_DIR}base.mp4
+MOVIE_PART_DIR_PATH=${TMP_DIR}part/
+MOVIE_PART_LIST_FILE_PATH=${TMP_DIR}part_list.txt
 
 mkdir -p $TMP_DIR
+mkdir -p $MOVIE_PART_DIR_PATH
 
 # 画像サイズと位置
 output_width=1920                     # 出力動画の幅
@@ -50,8 +53,7 @@ done < "$csv_file"
 
 echo $totalPartSec
 
-# FFmpegコマンド
-# 右上に画像配置
+# ベース動画作成　BG画像表示。左下と右上に画像配置
 ffmpeg -y -i "$background_image" -i "$bottom_left_image" -i "$right_top_image" \
 -filter_complex "\
     [0:v]scale=${output_width}:${output_height}[bg]; \
@@ -64,8 +66,8 @@ ffmpeg -y -i "$background_image" -i "$bottom_left_image" -i "$right_top_image" \
 # 必要なもの: 動画パート時間(10),フェードイン(4),フェードアウト(4),画像パス→
 # 計算で求められるもの: フェードアウト開始(6 動画パート時間(10)-フェードアウト(4)), オーバーラップさせる時間(t,0,10 これまでオーバーラップされた時間(変数sumPartSec 動画パート時間の累積)と、それ+動画パート時間(10))
 
-# sumPartSecを再度初期化
 sumPartSec=0
+n=1
 # CSVファイルを1行ずつ読み込み、lib/fadeInOut.shと同じ処理
 cat $csv_file | while IFS=',' read -r partSec fadeInSec fadeOutSec filePath; do
     # ヘッダ行（#で始まる行）や空行はスキップ
@@ -74,24 +76,29 @@ cat $csv_file | while IFS=',' read -r partSec fadeInSec fadeOutSec filePath; do
     fi
     echo "==================================================="
 
-    # 結果の表示
-    echo "$partSec,$fadeInSec,$fadeOutSec,$filePath"
-    nextSumPartSec=$((sumPartSec + partSec))
+    # パート動画のファイルパス
+    movie_part_file_path=${MOVIE_PART_DIR_PATH}part_$(printf "%04d" $n).mp4
 
-    # 背景が透明で、フェードイン、フェードアウトの動画パーツ
-    fadeOutStart=$((nextSumPartSec - fadeOutSec))
-    ffmpeg -y -loop 1 -i $filePath -vf "scale=1200:800,format=rgba,fade=t=in:st=${sumPartSec}:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=${fadeOutSec}:alpha=1" -t ${totalPartSec} -c:v qtrle $FADE_MOVIE_PATH < /dev/null
+    # 画像からフェード動画作成 背景は透明で、フェードイン、表示、フェードアウトする動画パーツ
+    fadeOutStart=$((partSec - fadeOutSec))
+    ffmpeg -y -loop 1 -i $filePath -vf "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=${fadeOutSec}:alpha=1" -t ${partSec} -c:v qtrle $FADE_MOVIE_PATH < /dev/null
     
-    # 別動画の中央にフェードイン・アウトの動画をオーバーラップさせる
-    ffmpeg -y -i $BASE_MOVIE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,${sumPartSec},${nextSumPartSec})'" -c:a copy $OUTPUT_MOVIE_PATH < /dev/null
-    
-    # ベースを置き換える
-    cp $OUTPUT_MOVIE_PATH $BASE_MOVIE_PATH
+    # ベース動画とフェード動画から動画パート作成
+    ffmpeg -y -i $BASE_MOVIE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,0,${partSec})'" -c:a copy $movie_part_file_path < /dev/null
 
+    # 結合するファイル一覧にファイルパス追加
+    echo "file '${movie_part_file_path}'" >> $MOVIE_PART_LIST_FILE_PATH
+    
     # sumPartSecの更新
     sumPartSec=$((sumPartSec + partSec))
+
+    # カウントアップ
+    ((n++))
     echo "==================================================="
 done
+
+# 結合ファイル一覧から結合動画作成
+ffmpeg -f concat -safe 0 -i $MOVIE_PART_LIST_FILE_PATH -c:a copy $OUTPUT_MOVIE_PATH < /dev/null
 
 echo $TMP_DIR
 xdg-open $TMP_DIR
