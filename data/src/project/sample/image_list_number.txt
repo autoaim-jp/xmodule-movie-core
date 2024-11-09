@@ -1,0 +1,4 @@
+# テスト
+6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0001.png
+6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0002.png
+6,3,1,/home/tokayupcg/list/simple/demo-video-creator/data/src/project/sample/image_list_number/image_0003.png
