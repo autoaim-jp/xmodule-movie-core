@@ -67,32 +67,33 @@ ffmpeg -y -i "$background_image" -i "$bottom_left_image" -i "$right_top_image" \
 # sumPartSecを再度初期化
 sumPartSec=0
 # CSVファイルを1行ずつ読み込む
-cat $csv_file | while read -r line; do
-    partSec=$(echo "$line" | awk -F',' '{print $1}' | xargs)
-    fadeInSec=$(echo "$line" | awk -F',' '{print $2}' | xargs)
-    fadeOutSec=$(echo "$line" | awk -F',' '{print $3}' | xargs)
-    filePath=$(echo "$line" | awk -F',' '{print $4}' | xargs)
+cat $csv_file | while IFS=',' read -r partSec fadeInSec fadeOutSec filePath; do
     # ヘッダ行（#で始まる行）や空行はスキップ
     if [[ -z "$partSec" || "$partSec" == \#* ]]; then
         continue
     fi
+    echo "==================================================="
 
     # 結果の表示
-    echo "==================================================="
     echo "$partSec,$fadeInSec,$fadeOutSec,$filePath"
-    echo "==================================================="
     # 背景が透明で、フェードイン、フェードアウトの動画パーツ
     fadeOutStart=$((partSec - fadeOutSec))
-    ffmpeg -y -loop 1 -i $center_image -vf "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=4:alpha=1" -t 10 -c:v qtrle $FADE_MOVIE_PATH 2>/dev/null < /dev/null
+    echo "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=${fadeOutSec}:alpha=1"
+    ffmpeg -y -loop 1 -i $filePath -vf "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=${fadeOutSec}:alpha=1" -t ${partSec} -c:v qtrle $FADE_MOVIE_PATH < /dev/null
     #ffmpeg -y -loop 1 -i $center_image -vf "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=4:alpha=1" -t 10 -c:v qtrle $FADE_MOVIE_PATH 2>/dev/null
     
     # lib/fadeInOut.shと同じ
     # 別動画の中央にフェードイン・アウトの動画をオーバーラップさせる
     nextSumPartSec=$((sumPartSec + partSec))
-    ffmpeg -y -i $BASE_MOVIE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,${sumPartSec},${nextSumPartSec})'" -c:a copy $OUTPUT_MOVIE_PATH 2>/dev/null < /dev/null
+    echo "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,${sumPartSec},${nextSumPartSec})'"
+    ffmpeg -y -i $BASE_MOVIE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,${sumPartSec},${nextSumPartSec})'" -c:a copy $OUTPUT_MOVIE_PATH < /dev/null
+    
+    # ベースを置き換える
+    cp $OUTPUT_MOVIE_PATH $BASE_MOVIE_PATH
 
     # sumPartSecの更新
     sumPartSec=$((sumPartSec + partSec))
+    echo "==================================================="
 done
 
 echo $TMP_DIR
