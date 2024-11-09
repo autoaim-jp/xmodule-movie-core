@@ -35,20 +35,20 @@ convert -size 200x80 xc:none \
 
 
 # sumPartSecの初期値を設定
-sumPartSec=0
+totalPartSec=0
 
-# sumPartSecの最終の値を確認
+# totalPartSecの最終の値を確認
 while IFS=',' read -r partSec fadeInSec fadeOutSec filePath
 do
     # ヘッダ行（#で始まる行）や空行はスキップ
     if [[ "$partSec" =~ ^#.* ]] || [[ -z "$partSec" ]]; then
         continue
     fi
-    # sumPartSecの更新
-    sumPartSec=$((sumPartSec + partSec))
+    # totalPartSecの更新
+    totalPartSec=$((totalPartSec + partSec))
 done < "$csv_file"
 
-echo $sumPartSec
+echo $totalPartSec
 
 # FFmpegコマンド
 # 右上に画像配置
@@ -59,7 +59,7 @@ ffmpeg -y -i "$background_image" -i "$bottom_left_image" -i "$right_top_image" \
     [bg][scaled_right_top_image]overlay=x=W-w-10:y=20[bg_with_right_top_image]; \
     [1:v]scale=${left_bottom_image_width}:${left_bottom_image_height}[bottom_left_img]; \
     [bg_with_right_top_image][bottom_left_img]overlay=x=20:y=H-${left_bottom_image_height}-20" \
--c:v libx264 -t $sumPartSec -pix_fmt yuv420p $BASE_MOVIE_PATH
+-c:v libx264 -t $totalPartSec -pix_fmt yuv420p $BASE_MOVIE_PATH
 
 # 必要なもの: 動画パート時間(10),フェードイン(4),フェードアウト(4),画像パス→
 # 計算で求められるもの: フェードアウト開始(6 動画パート時間(10)-フェードアウト(4)), オーバーラップさせる時間(t,0,10 これまでオーバーラップされた時間(変数sumPartSec 動画パート時間の累積)と、それ+動画パート時間(10))
@@ -76,15 +76,15 @@ cat $csv_file | while IFS=',' read -r partSec fadeInSec fadeOutSec filePath; do
 
     # 結果の表示
     echo "$partSec,$fadeInSec,$fadeOutSec,$filePath"
+    nextSumPartSec=$((sumPartSec + partSec))
+
     # 背景が透明で、フェードイン、フェードアウトの動画パーツ
-    fadeOutStart=$((partSec - fadeOutSec))
+    fadeOutStart=$((nextSumPartSec - fadeOutSec))
     echo "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=${fadeOutSec}:alpha=1"
-    ffmpeg -y -loop 1 -i $filePath -vf "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=${fadeOutSec}:alpha=1" -t ${partSec} -c:v qtrle $FADE_MOVIE_PATH < /dev/null
-    #ffmpeg -y -loop 1 -i $center_image -vf "scale=1200:800,format=rgba,fade=t=in:st=0:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=4:alpha=1" -t 10 -c:v qtrle $FADE_MOVIE_PATH 2>/dev/null
+    ffmpeg -y -loop 1 -i $filePath -vf "scale=1200:800,format=rgba,fade=t=in:st=${sumPartSec}:d=${fadeInSec}:alpha=1,fade=t=out:st=${fadeOutStart}:d=${fadeOutSec}:alpha=1" -t ${totalPartSec} -c:v qtrle $FADE_MOVIE_PATH < /dev/null
     
     # lib/fadeInOut.shと同じ
     # 別動画の中央にフェードイン・アウトの動画をオーバーラップさせる
-    nextSumPartSec=$((sumPartSec + partSec))
     echo "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,${sumPartSec},${nextSumPartSec})'"
     ffmpeg -y -i $BASE_MOVIE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,${sumPartSec},${nextSumPartSec})'" -c:a copy $OUTPUT_MOVIE_PATH < /dev/null
     
