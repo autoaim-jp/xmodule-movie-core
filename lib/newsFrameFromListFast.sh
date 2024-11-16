@@ -1,12 +1,11 @@
 #!/bin/bash
 
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
-TMP_DIR=/tmp/__newsFrame_${CURRENT_TIME}/
-background_image=${PWD}/data/src/project/sample/asset/background.jpg    # 全画面の背景画像
-center_image=${PWD}/data/src/project/sample/asset/graph.png        # 中央に表示する画像
-subtitle_text="字幕の文章"           # 中央下に表示する文章
-bottom_left_image=${PWD}/data/src/project/sample/asset/woman_flop.png    # 左下に表示する画像
-csv_file=${PWD}/data/src/project/sample/image_list_number.txt
+TMP_DIR="/tmp/__newsFrame_${CURRENT_TIME}/"
+background_image=${1:-"${PWD}/data/src/project/sample/asset/background.jpg"}    # 全画面の背景画像
+subtitle_text=${2:-"字幕の文章"}           # 中央下に表示する文章
+bottom_left_image=${3:-"${PWD}/data/src/project/sample/asset/woman_flop.png"}    # 左下に表示する画像
+CENTER_IMAGE_LIST_FILE_PATH=${4:-"${PWD}/data/src/project/sample/image_list_number.txt"}  # 中央に標示する画像のリスト
 
 right_top_image=${TMP_DIR}right_top.png
 right_bottom_image=${TMP_DIR}right_bottom.png
@@ -32,6 +31,7 @@ center_image_height=400               # 中央画像の高さ
 subtitle_box_height=50                # 中央下の字幕ボックスの高さ
 left_bottom_image_width=200           # 左下に表示するナレーター画像の幅
 left_bottom_image_height=151          # 左下画像の高さ
+
 # 右上の画像作成
 convert -size 200x80 xc:none \
     -fill "#f16529" -draw "roundrectangle 0,0 200,80 15,15" \
@@ -40,7 +40,7 @@ convert -size 200x80 xc:none \
     -pointsize 40 -fill white -annotate 0 "研修くん" \
     $right_top_image
 
-# 左下の画像作成
+# 右下の画像作成
 # まずは黒縁取り画像作成
 convert -size 380x100 xc:none -font /usr/share/fonts/opentype/source-han-sans/SourceHanSans-Bold.otf -pointsize 36 \
     -fill black -stroke black -strokewidth 7 -gravity center \
@@ -65,7 +65,7 @@ convert -size 655x100 xc:none \
     $left_top_image
 
 
-# sumPartSecの初期値を設定
+# totalPartSecの初期値を設定
 totalPartSec=0
 
 # totalPartSecの最終の値を確認
@@ -77,7 +77,7 @@ do
     fi
     # totalPartSecの更新
     totalPartSec=$((totalPartSec + partSec))
-done < "$csv_file"
+done < "$CENTER_IMAGE_LIST_FILE_PATH"
 
 echo $totalPartSec
 
@@ -101,7 +101,7 @@ ffmpeg -y -i "$background_image" -i "$bottom_left_image" -i "$right_top_image" -
 sumPartSec=0
 n=1
 # CSVファイルを1行ずつ読み込み、lib/fadeInOut.shと同じ処理
-cat $csv_file | while IFS=',' read -r partSec fadeInSec fadeOutSec filePath; do
+cat $CENTER_IMAGE_LIST_FILE_PATH | while IFS=',' read -r partSec fadeInSec fadeOutSec filePath; do
     # ヘッダ行（#で始まる行）や空行はスキップ
     if [[ -z "$partSec" || "$partSec" == \#* ]]; then
         continue
