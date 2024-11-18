@@ -1,7 +1,7 @@
 # find $(pwd)/data/src/project/children_book_1/dalle/ -type f | sort
 # sec,fadein,fadeout
-6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page1.webp
-6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page2.webp
-6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page3.webp
-6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page4.webp
+17,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page1.webp
+16,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page2.webp
+17,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page3.webp
+20,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page4.webp
 

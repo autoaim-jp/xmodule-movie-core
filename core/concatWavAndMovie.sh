@@ -12,5 +12,5 @@ CONCAT_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}concat_movie.mp4"}
 CONCAT_SOUND_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}concat_sound.wav"}
 
 # 動画ファイルと音声ファイルを結合する
-ffmpeg -i $CONCAT_MOVIE_FILE_PATH -i $CONCAT_SOUND_FILE_PATH -c:v copy -c:a aac -strict experimental $FINAL_MOVIE_FILE_PATH
+ffmpeg -y -i $CONCAT_MOVIE_FILE_PATH -i $CONCAT_SOUND_FILE_PATH -c:v copy -c:a aac -strict experimental $FINAL_MOVIE_FILE_PATH
 
