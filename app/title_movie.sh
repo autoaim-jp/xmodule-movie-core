@@ -6,14 +6,18 @@ SAMPLE_PROJECT_DIR_PATH=${ROOT_DIR_PATH}data/src/project/sample/
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 
 # output
-OUTPUT_DIR_PATH=${DATA_DIR_PATH}generated/title_movie/
-mkdir -p $OUTPUT_DIR_PATH
-TITLE_MOVIE_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.mp4
+if [[ $# -ge 1 && ! "$1" =~ ^- ]]; then
+  TITLE_MOVIE_FILE_PATH=${1}
+else
+  OUTPUT_DIR_PATH=${DATA_DIR_PATH}generated/title_movie/
+  mkdir -p $OUTPUT_DIR_PATH
+  TITLE_MOVIE_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.mp4
+fi
 
 # input
-TITLE_TEXT=${1:-"Sampleアプリ\n操作方法の紹介"}
-LOGO_IMG_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
-TITLE_SEC=${3:-5}
+TITLE_TEXT=${2:-"Sampleアプリ\n操作方法の紹介"}
+LOGO_IMG_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
+TITLE_SEC=${4:-5}
 
 # tmp 
 TMP_DIR_PATH=${DATA_DIR_PATH}tmp/title_movie/

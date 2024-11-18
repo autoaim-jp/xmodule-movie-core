@@ -20,12 +20,12 @@ RIGHT_BOTTOM_IMAGE_tmp2=${TMP_DIR_PATH}__right_bottom_tmp2.png
 # まずは黒縁取り画像作成
 convert -size 380x100 xc:none -font $FONT_FILE_PATH -pointsize 36 \
     -fill black -stroke black -strokewidth 7 -gravity center \
-    -annotate 0 $RIGHT_BOTTOM_TEXT $RIGHT_BOTTOM_IMAGE_tmp1
+    -annotate 0 "$RIGHT_BOTTOM_TEXT" $RIGHT_BOTTOM_IMAGE_tmp1
 
 # 次に白い中の文字作成
 convert -size 380x100 xc:none -font $FONT_FILE_PATH -pointsize 36 \
     -fill white -gravity center \
-    -annotate 0 $RIGHT_BOTTOM_TEXT $RIGHT_BOTTOM_IMAGE_tmp2
+    -annotate 0 "$RIGHT_BOTTOM_TEXT" $RIGHT_BOTTOM_IMAGE_tmp2
 
 # 画像を重ねる
 convert $RIGHT_BOTTOM_IMAGE_tmp1 $RIGHT_BOTTOM_IMAGE_tmp2 -gravity center -composite $RIGHT_BOTTOM_IMAGE

@@ -35,8 +35,8 @@ cat $CENTER_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fa
         continue
     fi
 
-    # パート動画のファイルパス
-    movie_part_file_path=${MOVIE_PART_DIR_PATH}part_$(printf "%04d" $n).mp4
+    # パート動画のファイルパス 絶対パス
+    movie_part_file_path=$(realpath ${MOVIE_PART_DIR_PATH}part_$(printf "%04d" $n).mp4)
 
     # 画像からフェード動画作成 背景は透明で、フェードイン、表示、フェードアウトする動画パーツ
     fade_out_start=$((part_sec - fade_out_sec))
