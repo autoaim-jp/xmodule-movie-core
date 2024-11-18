@@ -1,10 +1,19 @@
 #!/bin/bash
 
-TMP_IMG_FILE_PATH="${PWD}/data/tmp/tmp/__title.png"
-TMP_RESIZED_LOGO_PATH="${PWD}/data/tmp/tmp/__logo_resized.png"
+SCRIPT_DIR_PATH=$(dirname "$0")/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
+
+# output
 TITLE_IMG_FILE_PATH=${1:-/tmp/title.png}
+
+# input
 TITLE_TEXT=${2:-Webサービス名\n操作方法の紹介}
-LOGO_IMG_FILE_PATH=${3:-"${PWD}/data/src/project/sample/logo.webp"}
+LOGO_IMG_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
+
+# tmp
+TMP_IMG_FILE_PATH="${TMP_DIR_PATH}__title.png"
+TMP_RESIZED_LOGO_PATH="${TMP_DIR_PATH}__logo_resized.png"
 
 # 文字の画像を生成
 convert -size 1920x1080 xc:"#CCFFCC" -gravity center -pointsize 72 -font /usr/share/fonts/opentype/source-han-sans/SourceHanSans-Regular.otf -annotate +0-100 "$TITLE_TEXT" $TMP_IMG_FILE_PATH

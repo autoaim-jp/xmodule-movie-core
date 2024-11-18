@@ -5,12 +5,14 @@ CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 
 # output
 TITLE_MOVIE_FILE_PATH=${DATA_DIR_PATH}generated/title_movie/${CURRENT_TIME}.mp4
+mkdir -p ${DATA_DIR_PATH}generated/title_movie/
 
 # input
 TITLE_TEXT=${1:-"Sampleアプリ\n操作方法の紹介"}
 
 # tmp 
 TITLE_IMG_FILE_PATH=${DATA_DIR_PATH}tmp/title_movie/${CURRENT_TIME}.png
+mkdir -p ${DATA_DIR_PATH}tmp/title_movie/
 
 # タイトル画像作成
 ./core/createTitleImage.sh $TITLE_IMG_FILE_PATH $TITLE_TEXT
@@ -18,7 +20,7 @@ echo "作成したタイトル画像: $TITLE_IMG_FILE_PATH"
 # xdg-open $TITLE_IMG_FILE_PATH
 
 # フェードインとフェードアウトの動画
-./core/fadeEffect.sh $TITLE_IMG_FILE_PATH $TITLE_MOVIE_FILE_PATH
+./core/fadeEffect.sh $TITLE_MOVIE_FILE_PATH $TITLE_IMG_FILE_PATH
 echo "作成したタイトル動画: $TITLE_MOVIE_FILE_PATH"
 # xdg-open $TITLE_MOVIE_FILE_PATH
 
