@@ -1,8 +1,8 @@
 #!/bin/bash
 
-SCRIPT_DIR_PATH=${PWD}/
-DATA_DIR_PATH="${SCRIPT_DIR_PATH}data/"
-SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}data/src/project/sample/
+ROOT_DIR_PATH=$(dirname "$0")/../
+DATA_DIR_PATH="${ROOT_DIR_PATH}data/"
+SAMPLE_PROJECT_DIR_PATH=${ROOT_DIR_PATH}data/src/project/sample/
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 
 # output
@@ -21,10 +21,10 @@ mkdir -p $TMP_DIR_PATH
 TITLE_IMG_FILE_PATH=${TMP_DIR_PATH}${CURRENT_TIME}.png
 
 # タイトル画像作成
-./core/createTitleImage.sh $TITLE_IMG_FILE_PATH $TITLE_TEXT $LOGO_IMG_FILE_PATH
+${ROOT_DIR_PATH}core/createTitleImage.sh $TITLE_IMG_FILE_PATH $TITLE_TEXT $LOGO_IMG_FILE_PATH
 echo "作成したタイトル画像: $TITLE_IMG_FILE_PATH"
 
 # フェードインとフェードアウトの動画
-./core/fadeEffect.sh $TITLE_MOVIE_FILE_PATH $TITLE_IMG_FILE_PATH $TITLE_SEC
+${ROOT_DIR_PATH}core/fadeEffect.sh $TITLE_MOVIE_FILE_PATH $TITLE_IMG_FILE_PATH $TITLE_SEC
 echo "作成したタイトル動画: $TITLE_MOVIE_FILE_PATH"
 
