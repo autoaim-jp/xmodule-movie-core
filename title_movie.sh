@@ -13,6 +13,7 @@ TITLE_MOVIE_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.mp4
 # input
 TITLE_TEXT=${1:-"Sampleアプリ\n操作方法の紹介"}
 LOGO_IMG_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
+TITLE_SEC=${3:-5}
 
 # tmp 
 TMP_DIR_PATH=${DATA_DIR_PATH}tmp/title_movie/
@@ -24,6 +25,6 @@ TITLE_IMG_FILE_PATH=${TMP_DIR_PATH}${CURRENT_TIME}.png
 echo "作成したタイトル画像: $TITLE_IMG_FILE_PATH"
 
 # フェードインとフェードアウトの動画
-./core/fadeEffect.sh $TITLE_MOVIE_FILE_PATH $TITLE_IMG_FILE_PATH
+./core/fadeEffect.sh $TITLE_MOVIE_FILE_PATH $TITLE_IMG_FILE_PATH $TITLE_SEC
 echo "作成したタイトル動画: $TITLE_MOVIE_FILE_PATH"
 
