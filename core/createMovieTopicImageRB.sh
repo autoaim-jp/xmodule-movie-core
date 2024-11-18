@@ -1,10 +1,19 @@
 #!/bin/bash
 
+SCRIPT_DIR_PATH=$(dirname "$0")/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
+
+# output
 RIGHT_BOTTOM_IMAGE=${1:-/tmp/right_bottom.png}
+
+# input
 FONT_FILE_PATH=${2:-/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Bold.otf}
 RIGHT_BOTTOM_TEXT=${3:-"このアプリの使い方"}
-RIGHT_BOTTOM_IMAGE_tmp1=${PWD}/data/tmp/tmp/__right_bottom_tmp1.png
-RIGHT_BOTTOM_IMAGE_tmp2=${PWD}/data/tmp/tmp/__right_bottom_tmp2.png
+
+# tmp
+RIGHT_BOTTOM_IMAGE_tmp1=${TMP_DIR_PATH}__right_bottom_tmp1.png
+RIGHT_BOTTOM_IMAGE_tmp2=${TMP_DIR_PATH}__right_bottom_tmp2.png
 
 
 # 右下の画像作成
