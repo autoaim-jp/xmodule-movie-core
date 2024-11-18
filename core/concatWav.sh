@@ -5,10 +5,10 @@ SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 ##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 
 # output
-CONCAT_SOUND_FILE_PATH=${2:-/tmp/concat.wav}
+CONCAT_SOUND_FILE_PATH=${1:-/tmp/concat.wav}
 
 # input
-WAV_LIST_FILE_PATH=${1:-"${SAMPLE_PROJECT_DIR_PATH}wav_list_for_ffmpeg.txt"}
+WAV_LIST_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}wav_list_for_ffmpeg.txt"}
 
 # テキストファイル内のwavファイルを順に結合
 # wavファイルをffmpegで結合(なぜか早口になってしまう)
