@@ -1,8 +1,8 @@
 #!/bin/bash
 
-SCRIPT_DIR_PATH=$(dirname "$0")/
+SCRIPT_DIR_PATH=${PWD}/
 DATA_DIR_PATH="${SCRIPT_DIR_PATH}/data/"
-SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}data/src/project/sample/
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 
 # output
