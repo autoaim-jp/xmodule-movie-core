@@ -1,11 +1,19 @@
 #!/bin/bash
 
-TITLE_MOVIE_FILE_PATH=${1:-"${PWD}/data/src/project/sample/title_movie.mp4"}
-CAPTURE_MOVIE_FILE_PATH=${2:-"${PWD}/data/src/project/sample/capture.mp4"}
-CONCAT_MOVIE_FILE_PATH=${3:-/tmp/concat.mp4}
+SCRIPT_DIR_PATH=$(dirname "$0")/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 
-REENCODED_TITLE_MOVIE_FILE_PATH="${PWD}/data/tmp/tmp/__title_reencoded.mp4"
-REENCODED_CAPTURE_MOVIE_FILE_PATH="${PWD}/data/tmp/tmp/__capture_reencoded.mp4"
+# output
+CONCAT_MOVIE_FILE_PATH=${1:-/tmp/concat.mp4}
+
+# input
+TITLE_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}title_movie.mp4"}
+CAPTURE_MOVIE_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}capture.mp4"}
+
+# tmp
+REENCODED_TITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__title_reencoded.mp4"
+REENCODED_CAPTURE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__capture_reencoded.mp4"
 
 # 同じ条件でエンコードし直す
 ffmpeg -i $TITLE_MOVIE_FILE_PATH -r 60 -s 1920x1080 -c:v libx264 $REENCODED_TITLE_MOVIE_FILE_PATH
