@@ -1,9 +1,19 @@
 #!/bin/bash
 
-TMP_FADEIN_FILE_PATH="${PWD}/data/tmp/tmp/__fadein.mp4"
-TITLE_IMG_FILE_PATH=${1:-"${PWD}/data/src/project/sample/title.png"}
-TITLE_MOVIE_FILE_PATH=${2:-/tmp/title.mp4}
+SCRIPT_DIR_PATH=$(dirname "$0")/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 
-ffmpeg -loop 1 -i $TITLE_IMG_FILE_PATH -vf "fade=in:0:30" -t 5 $TMP_FADEIN_FILE_PATH
+# output
+TITLE_MOVIE_FILE_PATH=${1:-/tmp/title.mp4}
 
-ffmpeg -i $TMP_FADEIN_FILE_PATH -vf "fade=out:120:30" $TITLE_MOVIE_FILE_PATH
+# input
+TITLE_IMG_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}title.png"}
+
+# tmp
+TMP_FADEIN_FILE_PATH="${TMP_DIR_PATH}__fadein.mp4"
+
+ffmpeg -y -loop 1 -i $TITLE_IMG_FILE_PATH -vf "fade=in:0:30" -t 5 $TMP_FADEIN_FILE_PATH
+
+ffmpeg -y -i $TMP_FADEIN_FILE_PATH -vf "fade=out:120:30" $TITLE_MOVIE_FILE_PATH
+
