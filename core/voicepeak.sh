@@ -32,7 +32,7 @@ function _speak() {
   output_file_path=$1
   _NARRATOR=$2
   SPEED=$3
-  EMOTION_EXPR=$4
+  _EMOTION_EXPR=$4
   TEXT=$5
   echo $output_file_path
   if [[ -n "${NARRATOR_LIST[$_NARRATOR]}" ]]; then
@@ -41,6 +41,9 @@ function _speak() {
       echo "未対応のナレーター: $_NARRATOR"
 	  exit 1
   fi
+
+  # 感情のパラメータの区切り文字 _ を , に置換する。csvのため_で区切ってある。
+  EMOTION_EXPR="${_EMOTION_EXPR//_/,}"
 
   ~/application/Voicepeak/voicepeak -o $output_file_path -n "$NARRATOR" --speed $SPEED -e "$EMOTION_EXPR" -s "$TEXT" 2>/dev/null
   if [[ $? -eq 0 ]]; then
@@ -59,8 +62,12 @@ function _speak() {
   fi
 }
 
+last_total_sec=0
+current_total_sec=0
+subtitle_csv_str=""
+
 # CSVファイルを行ごとに処理
-cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
+while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   # 空行と#から始まるコメント行は無視
   if [[ -z "$type" || "$type" == \#* ]]; then
     continue
@@ -71,11 +78,13 @@ cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   # 音声ファイル名 すでに存在していれば利用 なければ作成 ファイル名を安全にするためシェルの特殊文字とスラッシュをアンダースコアで置換
   output_file_name=$(printf "%s_%s_%s_%s_%s.wav" "$type" "$arg1" "$arg2" "$arg3" "$arg4" | sed 's/[*?[\]{}()&|;<>`"'"'"'\\$#\/]/_/g')
   output_file_path="${SOUND_DIR_PATH}${output_file_name}"
+  
+  text=$arg4
 
   # 音声ファイルがなければ作成
   if [[ ! -f $output_file_path ]]; then
     if [[ $type == "speak" ]]; then
-      _speak $output_file_path $arg1 $arg2 $arg3 $arg4
+      _speak $output_file_path $arg1 $arg2 $arg3 $text
     elif [[ $type == "silent" ]]; then
       silent_time_s=$arg1
       sox -n -r 48000 -c 1 $output_file_path trim 0 $silent_time_s >/dev/null 2>&1
@@ -96,6 +105,25 @@ cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   # echo "file '$output_file_path'" >> $WAV_LIST_FILE_PATH
 
   # 音声ファイルの長さを表示
-  echo $(soxi -D $output_file_path) $output_file_path
-done
+  wav_file_sec=$(soxi -D $output_file_path)
+  current_total_sec=$(echo "$last_total_sec + $wav_file_sec" | bc)
+  echo $wav_file_sec $output_file_path
+
+  if [[ $type == "speak" ]]; then
+    last_total_sec_ceil=$(echo "$last_total_sec" | awk '{print int($1)+($1>int($1))}')
+    current_total_sec_ceil=$(echo "$current_total_sec" | awk '{print int($1)+($1>int($1))}')
+    echo "last_total_sec_ceil: $last_total_sec_ceil"
+    echo "current_total_sec_ceil: $current_total_sec_ceil"
+    echo "text: $text"
+    subtitle_csv_str+="${last_total_sec_ceil},${current_total_sec_ceil},${text}"$'\n'
+  fi
+
+  last_total_sec=$current_total_sec
+done < "$NARRATION_FILE_PATH"
+
+echo "=============================="
+# 最後の余分な改行を削除
+subtitle_csv_str="${subtitle_csv_str%$'\n'}"
+echo -e "$subtitle_csv_str"
+echo "=============================="
 
