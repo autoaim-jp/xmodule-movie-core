@@ -1,13 +1,17 @@
 #!/bin/bash
 
-DATA_DIR_PATH="${PWD}/data/"
+SCRIPT_DIR_PATH=$(dirname "$0")/
+DATA_DIR_PATH="${SCRIPT_DIR_PATH}/data/"
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 
 # output
 if [[ $# -ge 1 && ! "$1" =~ ^- ]]; then
   OUTPUT_MOVIE_FILE_PATH=${1}
 else
-  OUTPUT_MOVIE_FILE_PATH=${DATA_DIR_PATH}generated/main_part_from_image_list/${CURRENT_TIME}.mp4
+  OUTPUT_DIR_PATH=${DATA_DIR_PATH}generated/main_part_from_image_list/
+  mkdir -p $OUTPUT_DIR_PATH
+  OUTPUT_MOVIE_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.mp4
 fi
 
 # input
@@ -15,18 +19,20 @@ RIGHT_TOP_TEXT=${2:-"動画さん"}
 LEFT_TOP_TEXT=${3:-"研修カリキュラム自動作成"}
 RIGHT_BOTTOM_TEXT=${4:-"このアプリの使い方"}
 FONT_FILE_PATH=${5:-/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Bold.otf}
-LB_NARRATOR_IMAGE_FILE_PATH=${6:-"${DATA_DIR_PATH}src/project/sample/asset/woman_flop.png"}
-BACKGROUND_IMAGE_FILE_PATH=${7:-"${DATA_DIR_PATH}src/project/sample/asset/background.jpg"}
-# CENTER_IMAGE_LIST_FILE_PATH=${8:-"${DATA_DIR_PATH}src/project/sample/image_list_number.txt"}
-CENTER_IMAGE_LIST_FILE_PATH=${8:-"${DATA_DIR_PATH}src/project/sample/image_list_number_only3.txt"}
+LB_NARRATOR_IMAGE_FILE_PATH=${6:-"${SAMPLE_PROJECT_DIR_PATH}asset/woman_flop.png"}
+BACKGROUND_IMAGE_FILE_PATH=${7:-"${SAMPLE_PROJECT_DIR_PATH}asset/background.jpg"}
+# CENTER_IMAGE_LIST_FILE_PATH=${8:-"${SAMPLE_PROJECT_DIR_PATH}image_list_number.txt"}
+CENTER_IMAGE_LIST_FILE_PATH=${8:-"${SAMPLE_PROJECT_DIR_PATH}image_list_number_only3.txt"}
 
-# other
-RT_OWNER_IMAGE_FILE_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/right_top_owner.png
-LT_THEME_IMAGE_FILE_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/left_top_theme.png
-RB_TOPIC_IMAGE_FILE_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/right_bottom_topic.png
-BASE_PART_MOVIE_FILE_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/base.mp4
-MOVIE_PART_DIR_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/${CURRENT_TIME}/
-MOVIE_PART_LIST_FILE_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/part_list.txt
+# tmp
+TMP_DIR_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/
+mkdir -p $TMP_DIR_PATH
+RT_OWNER_IMAGE_FILE_PATH=${TMP_DIR_PATH}right_top_owner.png
+LT_THEME_IMAGE_FILE_PATH=${TMP_DIR_PATH}left_top_theme.png
+RB_TOPIC_IMAGE_FILE_PATH=${TMP_DIR_PATH}right_bottom_topic.png
+BASE_PART_MOVIE_FILE_PATH=${TMP_DIR_PATH}base.mp4
+MOVIE_PART_DIR_PATH=${TMP_DIR_PATH}${CURRENT_TIME}/
+MOVIE_PART_LIST_FILE_PATH=${TMP_DIR_PATH}part_list.txt
 
 # 右上の動画オーナー画像作成
 ./core/createOwnerImageRT.sh $RT_OWNER_IMAGE_FILE_PATH $FONT_FILE_PATH $RIGHT_TOP_TEXT
