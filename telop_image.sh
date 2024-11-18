@@ -13,10 +13,10 @@ LT_THEME_IMAGE_FILE_PATH=${OUTPUT_DIR_PATH}left_top_theme.png
 RB_TOPIC_IMAGE_FILE_PATH=${OUTPUT_DIR_PATH}right_bottom_topic.png
 
 # input
-RIGHT_TOP_TEXT=${2:-"動画さん"}
-LEFT_TOP_TEXT=${3:-"研修カリキュラム自動作成"}
-RIGHT_BOTTOM_TEXT=${4:-"このアプリの使い方"}
-FONT_FILE_PATH=${5:-/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Bold.otf}
+RIGHT_TOP_TEXT=${1:-"動画さん"}
+LEFT_TOP_TEXT=${2:-"研修カリキュラム自動作成"}
+RIGHT_BOTTOM_TEXT=${3:-"このアプリの使い方"}
+FONT_FILE_PATH=${4:-/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Bold.otf}
 
 # 右上の動画オーナー画像作成
 ./core/createOwnerImageRT.sh $RT_OWNER_IMAGE_FILE_PATH $FONT_FILE_PATH $RIGHT_TOP_TEXT
