@@ -5,15 +5,15 @@ SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 ##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 
 # output
-BASE_MOVIE_PATH=${1:-"${SAMPLE_PROJECT_DIR_PATH}main_part/base.mp4"}  # ベース動画
+BASE_MOVIE_PATH=${1:-"/tmp/base.mp4"}  # ベース動画
 
 # input
-CENTER_IMAGE_LIST_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}image_list_number.txt"}  # 中央に標示する画像のリスト
+CENTER_IMAGE_LIST_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}image_list_number.txt"}
 RT_OWNER_IMAGE_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}main_part/right_top.png"}
 LT_THEME_IMAGE_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}main_part/left_top.png"}
 RB_TOPIC_IMAGE_FILE_PATH=${5:-"${SAMPLE_PROJECT_DIR_PATH}main_part/right_bottom.png"}
-LB_NARRATOR_IMAGE_FILE_PATH=${6:-"${SAMPLE_PROJECT_DIR_PATH}asset/woman_flop.png"}    # 左下に表示する画像
-BACKGROUND_IMAGE_FILE_PATH=${7:-"${SAMPLE_PROJECT_DIR_PATH}asset/background.jpg"}    # 全画面の背景画像
+LB_NARRATOR_IMAGE_FILE_PATH=${6:-"${SAMPLE_PROJECT_DIR_PATH}asset/woman_flop.png"}
+BACKGROUND_IMAGE_FILE_PATH=${7:-"${SAMPLE_PROJECT_DIR_PATH}asset/background.jpg"}
 
 # other
 # 画像サイズと位置
@@ -23,7 +23,6 @@ right_top_box_width=300               # 右上に表示するボックスの幅
 right_top_box_height=100              # 右上ボックスの高さ
 center_image_width=600                # 中央画像の幅
 center_image_height=400               # 中央画像の高さ
-subtitle_box_height=50                # 中央下の字幕ボックスの高さ
 left_bottom_image_width=200           # 左下に表示するナレーター画像の幅
 left_bottom_image_height=151          # 左下画像の高さ
 
