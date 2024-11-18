@@ -3,6 +3,7 @@
 MOVIE_PART_LIST_FILE_PATH=${1:-/tmp/part_list.txt}  # 作成する動画のパス一覧
 MOVIE_PART_DIR_PATH=${2:-/tmp/__demo_video_creator/}  # 作成できた動画
 mkdir -p $MOVIE_PART_DIR_PATH
+echo > $MOVIE_PART_LIST_FILE_PATH
 
 CENTER_IMAGE_LIST_FILE_PATH=${3:-"${PWD}/data/src/project/sample/image_list_number.txt"}  # 中央に標示する画像のリスト
 BASE_MOVIE_PATH=${4:-"${PWD}/data/src/project/sample/main_part/base.mp4"}  # ベース動画
@@ -20,7 +21,6 @@ cat $CENTER_IMAGE_LIST_FILE_PATH | while IFS=',' read -r partSec fadeInSec fadeO
     if [[ -z "$partSec" || "$partSec" == \#* ]]; then
         continue
     fi
-    echo "==================================================="
 
     # パート動画のファイルパス
     movie_part_file_path=${MOVIE_PART_DIR_PATH}part_$(printf "%04d" $n).mp4
@@ -40,7 +40,5 @@ cat $CENTER_IMAGE_LIST_FILE_PATH | while IFS=',' read -r partSec fadeInSec fadeO
 
     # カウントアップ
     ((n++))
-    echo "==================================================="
 done
-
 
