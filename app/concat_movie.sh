@@ -6,14 +6,18 @@ SAMPLE_PROJECT_DIR_PATH=${ROOT_DIR_PATH}data/src/project/sample/
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 
 # output
-OUTPUT_DIR_PATH=${DATA_DIR_PATH}generated/concat_movie/ 
-mkdir -p $OUTPUT_DIR_PATH
-FINAL_MOVIE_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.mp4
+if [[ $# -ge 1 && ! "$1" =~ ^- ]]; then
+  FINAL_MOVIE_FILE_PATH=${1}
+else
+  OUTPUT_DIR_PATH=${DATA_DIR_PATH}generated/concat_movie/ 
+  mkdir -p $OUTPUT_DIR_PATH
+  FINAL_MOVIE_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.mp4
+fi
 
 # input
-TITLE_MOVIE_FILE_PATH=${1:-"${SAMPLE_PROJECT_DIR_PATH}title_movie.mp4"}
-MAIN_PART_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}main_part.mp4"}
-CONCAT_SOUND_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}concat_sound.wav"}
+TITLE_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}title_movie.mp4"}
+MAIN_PART_MOVIE_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}main_part.mp4"}
+CONCAT_SOUND_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}concat_sound.wav"}
 
 # tmp
 TMP_DIR_PATH=${DATA_DIR_PATH}tmp/concat_movie/ 

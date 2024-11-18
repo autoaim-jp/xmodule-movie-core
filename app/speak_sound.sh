@@ -6,14 +6,18 @@ SAMPLE_PROJECT_DIR_PATH=${ROOT_DIR_PATH}data/src/project/sample/
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 
 # output
-OUTPUT_DIR_PATH=${DATA_DIR_PATH}generated/speak_sound/ 
-mkdir -p $OUTPUT_DIR_PATH
-CONCAT_SOUND_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.wav
+if [[ $# -ge 1 && ! "$1" =~ ^- ]]; then
+  CONCAT_SOUND_FILE_PATH=${1}
+else
+  OUTPUT_DIR_PATH=${DATA_DIR_PATH}generated/speak_sound/ 
+  mkdir -p $OUTPUT_DIR_PATH
+  CONCAT_SOUND_FILE_PATH=${OUTPUT_DIR_PATH}${CURRENT_TIME}.wav
+fi
 SOUND_DIR_PATH=${DATA_DIR_PATH}generated/_common/speak_sound/
 mkdir -p $SOUND_DIR_PATH
 
 # input
-NARRATION_FILE_PATH=${1:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+NARRATION_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
 
 # tmp
 TMP_DIR_PATH=${DATA_DIR_PATH}tmp/speak_sound/ 

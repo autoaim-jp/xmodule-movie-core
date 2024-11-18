@@ -57,8 +57,8 @@ elif [[ "$RT_OWNER_IMAGE_FILE_PATH" == "x" && \
   ffmpeg -y -i "$BACKGROUND_IMAGE_FILE_PATH" -i "$LT_THEME_IMAGE_FILE_PATH" \
   -filter_complex "\
       [0:v]scale=${output_width}:${output_height}[bg]; \
-      [1:v]scale=655:100[lt]; \
-      [bg][lt]overlay=x=20:y=20 \
+      [1:v]scale=380:100[lt]; \
+      [bg][lt]overlay=x=W-w-10:y=20 \
       " \
   -c:v libx264 -t $total_part_sec -pix_fmt yuv420p $BASE_MOVIE_FILE_PATH
 else

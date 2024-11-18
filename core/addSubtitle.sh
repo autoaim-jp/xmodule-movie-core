@@ -42,7 +42,7 @@ done < $SUBTITLE_TEXT_FILE_PATH
 filter_text=${filter_text:0:-1}
 
 # 字幕を動画につける
-ffmpeg -i $CAPTURE_MOVIE_FILE_PATH -vf $filter_text $SUBTITLE_MOVIE_FILE_PATH
+ffmpeg -y -i $CAPTURE_MOVIE_FILE_PATH -vf $filter_text $SUBTITLE_MOVIE_FILE_PATH
 
 # 一時ディレクトリを削除する
 rm -rf $TEXT_FILE_DIR_PATH
