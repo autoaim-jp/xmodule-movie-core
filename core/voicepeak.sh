@@ -99,8 +99,8 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
     fi
   fi
 
-  # 音声ファイルをwavリストに追記
-  echo "$output_file_path" >> $WAV_LIST_FILE_PATH
+  # 音声ファイルをwavリストに追記 絶対パス
+  echo $(realpath "$output_file_path") >> $WAV_LIST_FILE_PATH
   # ffmpeg用
   # echo "file '$output_file_path'" >> $WAV_LIST_FILE_PATH
 

@@ -12,7 +12,7 @@ mkdir -p $MOVIE_PART_DIR_PATH
 
 # input
 CENTER_IMAGE_LIST_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}image_list_number.txt"}
-BASE_MOVIE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}main_part/base.mp4"}
+BASE_MOVIE_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}main_part/base.mp4"}
 
 # tmp
 FADE_MOVIE_PATH=${TMP_DIR_PATH}__image_fade.mov
@@ -43,7 +43,7 @@ cat $CENTER_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fa
     ffmpeg -y -loop 1 -i $file_path -vf "scale=${center_image_width}:${center_image_height},format=rgba,fade=t=in:st=0:d=${fade_in_sec}:alpha=1,fade=t=out:st=${fade_out_start}:d=${fade_out_sec}:alpha=1" -t ${part_sec} -c:v qtrle $FADE_MOVIE_PATH < /dev/null
     
     # ベース動画とフェード動画から動画パート作成
-    ffmpeg -y -i $BASE_MOVIE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,0,${part_sec})'" -c:a copy $movie_part_file_path < /dev/null
+    ffmpeg -y -i $BASE_MOVIE_FILE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,0,${part_sec})'" -c:a copy $movie_part_file_path < /dev/null
 
     # 結合するファイル一覧にファイルパス追加
     echo "file '${movie_part_file_path}'" >> $MOVIE_PART_LIST_FILE_PATH
