@@ -28,34 +28,30 @@ OUTPUTは /tmp/
 一時ファイルは data/tmp/tmp/__  (data/tmp/**/　は app側で指定)
 
 # ディレクトリ構造
-.
-├── core
-├── data
-│   ├── capture
-│   ├── generated
-│   │   ├── movie
-│   │   └── sound
-│   ├── src
-│   │   └── project
-│   │       ├── my_project
-│   │       └── sample
-│   │           ├── asset
-│   │           ├── image_list
-│   │           ├── image_list_number
-│   │           └── main_part
-│   │               └── part
-│   └── tmp
-│       ├── capture_subtitle
-│       ├── movie_concat
-│       ├── sound
-│       ├── sound_concat
-│       ├── title_image
-│       ├── title_movie
-│       ├── tmp
-│       └── wav_list
-├── lib
-└── tmp
-    └── tmp
-        └── __newsFrame_20241116_183529
-            └── part
-
+.  
+├── core コアのモジュール　インプットとアウトプットが明確  
+├── data スクリプトではないリソース(画像や動画、音声ファイルなど)を配置  
+│   ├── capture キャプチャした動画を配置する  
+│   ├── generated メイン処理(/*.sh)で生成したもの  
+│   │   ├── movie  
+│   │   └── sound  
+│   ├── src 処理で使うリソース。主にメイン処理(/*.sh)で渡す。  
+│   │   └── project プロジェクトごとにリソースを管理  
+│   │       ├── my_project  
+│   │       └── sample サンプルプロジェクト。コア処理(/core/*.sh)のデフォルト引数。  
+│   │           ├── asset  
+│   │           ├── image_list  
+│   │           ├── image_list_number  
+│   │           └── main_part  
+│   │               └── part  
+│   └── tmp メイン処理(/*.sh)で生成した、最終アウトプットではない結果  
+│       ├── capture_subtitle  
+│       ├── movie_concat  
+│       ├── sound  
+│       ├── sound_concat  
+│       ├── title_image  
+│       ├── title_movie  
+│       ├── tmp コア処理(/core/*.sh)で生成した、最終アウトプットではない結果  
+│       └── wav_list  
+└── lib 未整理のコマンド等  
+  
