@@ -1,6 +1,13 @@
 #!/bin/bash
 
+##SCRIPT_DIR_PATH=$(dirname "$0")/
+##SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
+
+# output
 LEFT_TOP_IMAGE=${1:-/tmp/left_top.png}
+
+# input
 FONT_FILE_PATH=${2:-/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Bold.otf}
 LEFT_TOP_TEXT=${3:-"株式グラフ管理Webアプリ"}
 
