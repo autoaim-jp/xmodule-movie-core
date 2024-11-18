@@ -1,5 +1,0 @@
-
-file '/home/tokayupcg/list/simple/xmodule-movie-core/data/tmp/main_part_from_image_list/20241118_222738/part_0001.mp4'
-file '/home/tokayupcg/list/simple/xmodule-movie-core/data/tmp/main_part_from_image_list/20241118_222738/part_0002.mp4'
-file '/home/tokayupcg/list/simple/xmodule-movie-core/data/tmp/main_part_from_image_list/20241118_222738/part_0003.mp4'
-file '/home/tokayupcg/list/simple/xmodule-movie-core/data/tmp/main_part_from_image_list/20241118_222738/part_0004.mp4'

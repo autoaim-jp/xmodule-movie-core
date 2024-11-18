@@ -1,5 +1,5 @@
 #!/bin/bash
 
 # tmpディレクトリのクリーンアップ
-rm ./data/tmp/*
+rm -rf ./data/tmp/
 
