@@ -1,4 +1,7 @@
-data/src/project/children_book_1/dalle/DALL·E 2024-11-18 19.12.41 - A watercolor-style illustration of a small garden with a tall, lush tree that has grown from a mysterious seed. A young boy with a red backpack stands.webp
-data/src/project/children_book_1/dalle/DALL·E 2024-11-18 19.11.41 - A watercolor-style illustration of a young boy, around six years old, in a lush green forest. The boy, wearing a red backpack and a curious expression.webp
-data/src/project/children_book_1/dalle/DALL·E 2024-11-18 19.12.00 - A watercolor-style illustration of a large ancient tree in a mystical forest, with a kind, wise face emerging from its bark. The tree is surrounded by.webp
-data/src/project/children_book_1/dalle/DALL·E 2024-11-18 19.12.27 - A watercolor-style illustration of a young boy with a red backpack walking carefully through a magical forest. The scene is vibrant with details_ a gr.webp
+# find $(pwd)/data/src/project/children_book_1/dalle/ -type f | sort
+# sec,fadein,fadeout
+6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page1.webp
+6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page2.webp
+6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page3.webp
+6,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_1/dalle/page4.webp
+

@@ -15,8 +15,12 @@ LOGO_IMG_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
 TMP_IMG_FILE_PATH="${TMP_DIR_PATH}__title.png"
 TMP_RESIZED_LOGO_PATH="${TMP_DIR_PATH}__logo_resized.png"
 
+# other
+text_pos_x="+0"
+text_pos_y="-150"
+
 # 文字の画像を生成
-convert -size 1920x1080 xc:"#CCFFCC" -gravity center -pointsize 72 -font /usr/share/fonts/opentype/source-han-sans/SourceHanSans-Regular.otf -annotate +0-100 "$TITLE_TEXT" $TMP_IMG_FILE_PATH
+convert -size 1920x1080 xc:"#CCFFCC" -gravity center -pointsize 72 -font /usr/share/fonts/opentype/source-han-sans/SourceHanSans-Regular.otf -annotate "${text_pos_x}${text_pos_y}" "$TITLE_TEXT" $TMP_IMG_FILE_PATH
 
 # ロゴ画像をリサイズ
 convert $LOGO_IMG_FILE_PATH -resize 500x $TMP_RESIZED_LOGO_PATH
