@@ -30,22 +30,28 @@ MOVIE_PART_LIST_FILE_PATH=${DATA_DIR_PATH}tmp/main_part_from_image_list/part_lis
 
 # 右上の動画オーナー画像作成
 ./core/createOwnerImageRT.sh $RT_OWNER_IMAGE_FILE_PATH $FONT_FILE_PATH $RIGHT_TOP_TEXT
+echo "作成した右上画像: ${RT_OWNER_IMAGE_FILE_PATH}"
 
 # 左上の動画テーマ画像作成
 ./core/createMovieThemeImageLT.sh $LT_THEME_IMAGE_FILE_PATH $FONT_FILE_PATH $LEFT_TOP_TEXT
+echo "作成した左上画像: ${LT_THEME_IMAGE_FILE_PATH}"
 
 # 右下の動画トピック画像作成
 ./core/createMovieTopicImageRB.sh $RB_TOPIC_IMAGE_FILE_PATH $FONT_FILE_PATH $RIGHT_BOTTOM_TEXT
+echo "作成した右下画像: ${RB_TOPIC_IMAGE_FILE_PATH}"
 
 # ベース動画作成
 ./core/createBasePartMovie.sh $BASE_PART_MOVIE_FILE_PATH $CENTER_IMAGE_LIST_FILE_PATH $RT_OWNER_IMAGE_FILE_PATH $LT_THEME_IMAGE_FILE_PATH $RB_TOPIC_IMAGE_FILE_PATH $LB_NARRATOR_IMAGE_FILE_PATH $BACKGROUND_IMAGE_FILE_PATH
+echo "作成したベース動画: ${BASE_PART_MOVIE_FILE_PATH}"
 
 # フェード動画を作成し、ベース動画と結合
 ./core/mergeBaseAndFadeMovie.sh $MOVIE_PART_LIST_FILE_PATH $MOVIE_PART_DIR_PATH $CENTER_IMAGE_LIST_FILE_PATH $BASE_PART_MOVIE_FILE_PATH
+echo "パート動画ディレクトリ: ${MOVIE_PART_DIR_PATH}"
 
 # パートファイル一覧から結合動画を作成
 ./core/concatMovieFromList.sh $OUTPUT_MOVIE_FILE_PATH $MOVIE_PART_LIST_FILE_PATH
+echo "作成したメインパート動画: ${OUTPUT_MOVIE_FILE_PATH}"
 
 # パート動画のディレクトリを削除
-mkdir -p $MOVIE_PART_DIR_PATH
+rm -rf $MOVIE_PART_DIR_PATH
 
