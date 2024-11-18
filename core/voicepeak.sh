@@ -1,10 +1,19 @@
 #!/bin/bash
 
-NARRATION_FILE_PATH=${1:-"${PWD}/data/src/project/sample/narration.csv"}
-WAV_LIST_FILE_PATH=${2:-/tmp/wav_list_for_ffmpeg.txt}
-SOUND_DIR=${3:-/tmp/sound/}
-LINE_NUMBER=0
+SCRIPT_DIR_PATH=$(dirname "$0")/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 
+# output
+WAV_LIST_FILE_PATH=${1:-/tmp/wav_list_for_ffmpeg.txt}
+SOUND_DIR=${2:-/tmp/sound/}
+mkdir -p $SOUND_DIR
+
+# input
+NARRATION_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+
+# other
+LINE_NUMBER=0
 
 # ナレーターの変換用
 declare -A NARRATOR_LIST=(
@@ -50,9 +59,6 @@ function _speak() {
   fi
 }
 
-# サウンドディレクトリを作成
-mkdir -p $SOUND_DIR
-
 # CSVファイルを行ごとに処理
 cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   # 空行と#から始まるコメント行は無視
@@ -91,6 +97,5 @@ cat $NARRATION_FILE_PATH | while IFS=',' read -r type arg1 arg2 arg3 arg4; do
 
   # 音声ファイルの長さを表示
   echo $(soxi -D $OUTPUT_FILE_PATH) $OUTPUT_FILE_PATH
-
 done
 
