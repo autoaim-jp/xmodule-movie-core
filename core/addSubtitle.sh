@@ -8,7 +8,7 @@ TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 SUBTITLE_MOVIE_FILE_PATH=${1:-/tmp/subtitle.mp4}
 
 # input
-CAPTURE_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}capture.mp4"}
+CONCAT_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}concat_movie.mp4"}
 SUBTITLE_TEXT_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}subtitle.csv"}
 
 # tmp
@@ -42,7 +42,7 @@ done < $SUBTITLE_TEXT_FILE_PATH
 filter_text=${filter_text:0:-1}
 
 # 字幕を動画につける
-ffmpeg -y -i $CAPTURE_MOVIE_FILE_PATH -vf $filter_text $SUBTITLE_MOVIE_FILE_PATH
+ffmpeg -y -i $CONCAT_MOVIE_FILE_PATH -vf $filter_text $SUBTITLE_MOVIE_FILE_PATH
 
 # 一時ディレクトリを削除する
 rm -rf $TEXT_FILE_DIR_PATH
