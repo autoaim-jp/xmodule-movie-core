@@ -1,0 +1,5 @@
+/home/tokayupcg/list/simple/xmodule-movie-core/./data/src/project/children_book_2/asset_ordered/image_0001.png
+/home/tokayupcg/list/simple/xmodule-movie-core/./data/src/project/children_book_2/asset_ordered/image_0002.png
+/home/tokayupcg/list/simple/xmodule-movie-core/./data/src/project/children_book_2/asset_ordered/image_0003.png
+/home/tokayupcg/list/simple/xmodule-movie-core/./data/src/project/children_book_2/asset_ordered/image_0004.png
+
