@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# <ルール整理>
+# タイトルはsilent,1,,,とsilent,3,,,の行で挟む
+# 各ページの最初はstart-page,,,,の行
+# 文章は句点で行を分ける。その後、先頭にspeak,話し手ID,読み上げのスピード,感情,をつける。
+# 話し手ID: 登場人物の中で1人目の女性ならf1、登場人物の中で2人目の男性ならm2のような規則
+# 読み上げのスピード: 100が基本。早くするなら最大125。遅くするなら最低で75。
+# 感情: happy=0が基本。最大は100。happyのほか、fun、angry、sadがある。アンダースコア_で区切り、happy=80_fun50のように複数指定できる。
+# 各文章のあとはsilent,1,,,の行
+# 各ページの最後はend-page,,,,の行、その後にsilent,3,,,の行
+
 SCRIPT_DIR_PATH=$(dirname "$0")/
 SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 ##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
@@ -9,9 +19,13 @@ WAV_LIST_FILE_PATH=${1:-/tmp/wav_list_for_ffmpeg.txt}
 SOUND_DIR_PATH=${2:-/tmp/sound/}
 mkdir -p $SOUND_DIR_PATH
 SUBTITLE_CSV_FILE_PATH=${3:-/tmp/subtitle.csv}
+# image_list.csv用ロジック
+IMAGE_LIST_FILE_PATH=${4:-/tmp/image_list.csv}
 
 # input
-NARRATION_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+NARRATION_FILE_PATH=${5:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+# image_list.csv用ロジック
+IMAGE_DIR_PATH=${6:-/tmp/image/}
 
 # other
 LINE_NUMBER=0
@@ -65,7 +79,10 @@ function _speak() {
 
 last_total_sec=0
 current_total_sec=0
+page_id=0
+page_total_sec=0
 subtitle_csv_str=""
+image_list_csv_str=""
 
 # CSVファイルを行ごとに処理
 while IFS=',' read -r type arg1 arg2 arg3 arg4; do
@@ -89,6 +106,16 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
     elif [[ $type == "silent" ]]; then
       silent_time_s=$arg1
       sox -n -r 48000 -c 1 $output_file_path trim 0 $silent_time_s >/dev/null 2>&1
+    elif [[ $type == "start-page" ]]; then
+      # image_list.csv用ロジック
+      ((page_id++))
+      page_total_sec=0
+      continue
+    elif [[ $type == "end-page" ]]; then
+      # image_list.csv用ロジック
+      page_total_sec_ceil=$(echo "$page_total_sec" | awk '{print int($1)+($1>int($1))}')
+      image_list_csv_str+="${page_total_sec_ceil},2,2,${IMAGE_DIR_PATH}image_$(printf "%04d" $page_id).png"$'\n'
+      continue
     else
       echo "未対応のtype: $type $arg1 $arg2 $arg3 $arg4"
       exit 1
@@ -105,12 +132,15 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   # ffmpeg用
   # echo "file '$output_file_path'" >> $WAV_LIST_FILE_PATH
 
-  # 音声ファイルの長さを表示
+  # 音声ファイルの長さを計算
   wav_file_sec=$(soxi -D $output_file_path)
   current_total_sec=$(echo "$last_total_sec + $wav_file_sec" | bc)
+  # image_list.csv用ロジック
+  page_total_sec=$(echo "$page_total_sec + $wav_file_sec" | bc)
   echo $wav_file_sec $output_file_path
 
   if [[ $type == "speak" ]]; then
+    # subtitle
     last_total_sec_ceil=$(echo "$last_total_sec" | awk '{print int($1)+($1>int($1))}')
     current_total_sec_ceil=$(echo "$current_total_sec" | awk '{print int($1)+($1>int($1))}')
     echo "last_total_sec_ceil: $last_total_sec_ceil"
@@ -128,4 +158,13 @@ subtitle_csv_str="${subtitle_csv_str%$'\n'}"
 echo -e "$subtitle_csv_str"
 echo -e "$subtitle_csv_str" > $SUBTITLE_CSV_FILE_PATH
 echo "=============================="
+
+# image_list.csv用ロジック
+echo "=============================="
+# 最後の余分な改行を削除
+image_list_csv_str="${image_list_csv_str%$'\n'}"
+echo -e "$image_list_csv_str"
+echo -e "$image_list_csv_str" > $IMAGE_LIST_FILE_PATH
+echo "=============================="
+
 

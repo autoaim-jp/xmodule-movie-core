@@ -16,16 +16,18 @@ fi
 SOUND_DIR_PATH=${DATA_DIR_PATH}generated/_common/speak_sound/
 mkdir -p $SOUND_DIR_PATH
 SUBTITLE_CSV_FILE_PATH=${2:-"${DATA_DIR_PATH}generated/subtitle.csv"}
+IMAGE_LIST_FILE_PATH=${3:-"${DATA_DIR_PATH}generated/image_list.csv"}
 
 # input
-NARRATION_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+NARRATION_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+IMAGE_DIR_PATH=${5:-"${SAMPLE_PROJECT_DIR_PATH}image_list_number/"}
 
 # tmp
 TMP_DIR_PATH=${DATA_DIR_PATH}tmp/speak_sound/ 
 mkdir -p $TMP_DIR_PATH
 WAV_LIST_FILE_PATH=${TMP_DIR_PATH}${CURRENT_TIME}_for_ffmpeg.txt
 
-${ROOT_DIR_PATH}core/voicepeak.sh $WAV_LIST_FILE_PATH $SOUND_DIR_PATH $SUBTITLE_CSV_FILE_PATH $NARRATION_FILE_PATH
+${ROOT_DIR_PATH}core/voicepeak.sh $WAV_LIST_FILE_PATH $SOUND_DIR_PATH $SUBTITLE_CSV_FILE_PATH $IMAGE_LIST_FILE_PATH $NARRATION_FILE_PATH $IMAGE_DIR_PATH
 if [[ $? -ne 0 ]]; then
   echo "異常終了しました。"
   exit 1
