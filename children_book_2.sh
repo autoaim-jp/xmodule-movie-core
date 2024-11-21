@@ -18,11 +18,11 @@ TITLE_TEXT=${3} # 物語のタイトル
 TITLE_IMAGE_FILE_PATH=${4} # 物語の表紙画像
 TELOP_TEXT=${5} # 右上の画像
 IMAGE_LIST_FILE_PATH=${6} # 挿絵のパスリスト
-SUBTITLE_FILE_PATH=${7} # subtitle.csv
 
 # tmp
 mkdir -p "$TMP_DIR_PATH"
 TMP_SOUND_FILE_PATH="${TMP_DIR_PATH}__speak_sound.wav"
+TMP_SUBTITLE_FILE_PATH="${TMP_DIR_PATH}__subtitle.csv"
 TMP_TITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__title_movie.mp4"
 TMP_RT_FILE_PATH="${TMP_DIR_PATH}__black_white_rt.png"
 TMP_MAIN_PART_MOVIE_FILE_PATH="${TMP_DIR_PATH}__main_part_movie.mp4"
@@ -30,7 +30,7 @@ TMP_CONCAT_MOVIE_FILE_PATH="${TMP_DIR_PATH}__concat_movie.mp4"
 TMP_SUBTITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__subtitle_movie.mp4"
 
 # ./app/speak_sound.sh
-./app/speak_sound.sh "$TMP_SOUND_FILE_PATH" "$NARRATION_FILE_PATH"
+./app/speak_sound.sh "$TMP_SOUND_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$NARRATION_FILE_PATH"
 
 # ./app/title_movie.sh
 ./app/title_movie.sh "$TMP_TITLE_MOVIE_FILE_PATH" "$TITLE_TEXT" "$TITLE_IMAGE_FILE_PATH" 8
@@ -45,7 +45,7 @@ TMP_SUBTITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__subtitle_movie.mp4"
 ./app/concat_movie.sh "$TMP_CONCAT_MOVIE_FILE_PATH" "$TMP_TITLE_MOVIE_FILE_PATH" "$TMP_MAIN_PART_MOVIE_FILE_PATH" "$TMP_SOUND_FILE_PATH"
 
 # ./app/subtitle_movie.sh
-./app/subtitle_movie.sh "$TMP_SUBTITLE_MOVIE_FILE_PATH" "$TMP_CONCAT_MOVIE_FILE_PATH" "$SUBTITLE_FILE_PATH"
+./app/subtitle_movie.sh "$TMP_SUBTITLE_MOVIE_FILE_PATH" "$TMP_CONCAT_MOVIE_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH"
 
 ./lib/adjust_volume.sh "$OUTPUT_MOVIE_FILE_PATH" "$TMP_SUBTITLE_MOVIE_FILE_PATH" 0.5
 

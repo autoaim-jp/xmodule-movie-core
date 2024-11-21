@@ -8,9 +8,10 @@ SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 WAV_LIST_FILE_PATH=${1:-/tmp/wav_list_for_ffmpeg.txt}
 SOUND_DIR_PATH=${2:-/tmp/sound/}
 mkdir -p $SOUND_DIR_PATH
+SUBTITLE_CSV_FILE_PATH=${3:-/tmp/subtitle.csv}
 
 # input
-NARRATION_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+NARRATION_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
 
 # other
 LINE_NUMBER=0
@@ -125,5 +126,6 @@ echo "=============================="
 # 最後の余分な改行を削除
 subtitle_csv_str="${subtitle_csv_str%$'\n'}"
 echo -e "$subtitle_csv_str"
+echo -e "$subtitle_csv_str" > $SUBTITLE_CSV_FILE_PATH
 echo "=============================="
 
