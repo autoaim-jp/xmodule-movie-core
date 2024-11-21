@@ -1,20 +1,19 @@
 #!/bin/bash
 
-CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
-TMP_DIR=/tmp/__movieToPng_${CURRENT_TIME}/
-INPUT_DIR=${1:-"${PWD}/data/src/project/sample/image_list/"}
+# output
+OUTPUT_DIR=${1:-"/tmp/asset_ordered/"}
 
-mkdir $TMP_DIR
+# input
+INPUT_DIR=${2:-"${PWD}/data/src/project/sample/image_list/"}
+
+mkdir -p $OUTPUT_DIR
 
 pushd $INPUT_DIR
 n=1
 find . -maxdepth 1 -type f -name "*.webp" -print0 | sort -zV | while IFS= read -r -d '' file; do
     echo "Processing: $file"
-    convert "$file" "${TMP_DIR}image_$(printf "%04d" $n).png"
+    convert "$file" "${OUTPUT_DIR}image_$(printf "%04d" $n).png"
     ((n++))
 done
 popd
-
-echo $TMP_DIR
-xdg-open $TMP_DIR
 

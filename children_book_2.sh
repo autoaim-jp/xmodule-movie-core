@@ -21,6 +21,8 @@ IMAGE_DIR_PATH=${6} # 挿絵画像のディレクトリ
 
 # tmp
 mkdir -p "$TMP_DIR_PATH"
+TMP_ASSET_DIR_PATH="${TMP_DIR_PATH}__asset_ordered/"
+mkdir $TMP_ASSET_DIR_PATH
 TMP_SOUND_FILE_PATH="${TMP_DIR_PATH}__speak_sound.wav"
 TMP_SUBTITLE_FILE_PATH="${TMP_DIR_PATH}__subtitle.csv"
 TMP_TITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__title_movie.mp4"
@@ -30,8 +32,10 @@ TMP_CONCAT_MOVIE_FILE_PATH="${TMP_DIR_PATH}__concat_movie.mp4"
 TMP_SUBTITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__subtitle_movie.mp4"
 TMP_IMAGE_LIST_FILE_PATH="${TMP_DIR_PATH}__image_list.csv"
 
+./lib/rename_number_image.sh "$TMP_ASSET_DIR_PATH" "$IMAGE_DIR_PATH"
+
 # ./app/speak_sound.sh
-./app/speak_sound.sh "$TMP_SOUND_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$TMP_IMAGE_LIST_FILE_PATH" "$NARRATION_FILE_PATH" "$IMAGE_DIR_PATH"
+./app/speak_sound.sh "$TMP_SOUND_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$TMP_IMAGE_LIST_FILE_PATH" "$NARRATION_FILE_PATH" "$TMP_ASSET_DIR_PATH"
 
 # ./app/title_movie.sh
 ./app/title_movie.sh "$TMP_TITLE_MOVIE_FILE_PATH" "$TITLE_TEXT" "$TITLE_IMAGE_FILE_PATH" 8
