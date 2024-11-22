@@ -16,7 +16,7 @@ OUTPUT_MOVIE_FILE_PATH=${1} # result.mp4
 NARRATION_FILE_PATH=${2} # narration.csv
 TITLE_TEXT=${3} # 物語のタイトル
 TITLE_IMAGE_FILE_PATH=${4} # 物語の表紙画像
-TELOP_TEXT=${5} # 右上の画像
+TELOP_TEXT=${5} # 右上のテロップ
 IMAGE_DIR_PATH=${6} # 挿絵画像のディレクトリ
 
 # tmp
