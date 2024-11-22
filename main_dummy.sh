@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SUBTITLE_MOVIE_FILE_PATH=${1:--}
+
 # ./app/capture.sh
 # ./lib/rename_number_image.sh
 
@@ -14,7 +16,7 @@
 
 ./app/concat_movie.sh
 
-./app/subtitle_movie.sh
+./app/subtitle_movie.sh $SUBTITLE_MOVIE_FILE_PATH
 
 # ./lib/adjust_volume.sh
 
