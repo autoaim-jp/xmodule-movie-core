@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # ./app/capture.sh
+# ./lib/rename_number_image.sh
 
 ./app/speak_sound.sh
 
@@ -14,4 +15,6 @@
 ./app/concat_movie.sh
 
 ./app/subtitle_movie.sh
+
+# ./lib/adjust_volume.sh
 
