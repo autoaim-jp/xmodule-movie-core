@@ -8,7 +8,7 @@
 RIGHT_TOP_IMAGE=${1:-/tmp/right_top.png}
 
 # input
-FONT_FILE_PATH=${2:-"${SCRIPT_DIR_PATH}../SourceHanSans-Bold.otf"}
+FONT_FILE_PATH=${2:-"${SCRIPT_DIR_PATH}../asset/SourceHanSans-Bold.otf"}
 RIGHT_TOP_TEXT=${3:-"研修くん"}
 
 # 右上の画像作成

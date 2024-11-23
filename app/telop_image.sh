@@ -28,7 +28,7 @@ fi
 RIGHT_TOP_TEXT=${4:-"動画さん"}
 LEFT_TOP_TEXT=${5:-"研修カリキュラム自動作成"}
 RIGHT_BOTTOM_TEXT=${6:-"このアプリの使い方"}
-FONT_FILE_PATH=${7:-"${ROOT_DIR_PATH}SourceHanSans-Bold.otf"}
+FONT_FILE_PATH=${7:-"${ROOT_DIR_PATH}asset/SourceHanSans-Bold.otf"}
 
 # 右上の動画オーナー画像作成
 ${ROOT_DIR_PATH}core/createOwnerImageRT.sh $RT_OWNER_IMAGE_FILE_PATH $FONT_FILE_PATH "$RIGHT_TOP_TEXT"

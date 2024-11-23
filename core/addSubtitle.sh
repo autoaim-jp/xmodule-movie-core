@@ -10,7 +10,7 @@ SUBTITLE_MOVIE_FILE_PATH=${1:-/tmp/subtitle.mp4}
 # input
 CONCAT_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}concat_movie.mp4"}
 SUBTITLE_TEXT_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}subtitle.csv"}
-FONT_FILE_PATH=${4:-"${SCRIPT_DIR_PATH}../SourceHanSans-Bold.otf"}
+FONT_FILE_PATH=${4:-"${SCRIPT_DIR_PATH}../asset/SourceHanSans-Bold.otf"}
 
 # tmp
 TEXT_FILE_DIR_PATH=${TMP_DIR_PATH}subtitle_text/
