@@ -15,7 +15,7 @@ ENGINE_NAME=$(basename "$0" .sh)
 SCRIPT_DIR_PATH=$(dirname "$0")/
 SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 ##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
-VOICEVOX_SERVER=voicevox # dockerならコンテナ名にvoicevoxを、ローカル実行なら/etc/hostsにvoicevox=127.0.0.2を指定
+VOICEVOX_SERVER="http://voicevox:50021" # dockerならコンテナ名にvoicevoxを、ローカル実行なら/etc/hostsにvoicevox=127.0.0.2を指定
 
 # output
 WAV_LIST_FILE_PATH=${1:-/tmp/wav_list_for_ffmpeg.txt}
@@ -84,7 +84,7 @@ subtitle_csv_str=""
 image_list_csv_str=""
 
 # CSVファイルを行ごとに処理
-while IFS=',' read -r type arg1 arg2 arg3 arg4; do
+while IFS=',' read -r type arg1 arg2 arg3; do
   # 空行と#から始まるコメント行は無視
   if [[ -z "$type" || "$type" == \#* ]]; then
     continue
@@ -103,15 +103,15 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   fi
 
   # 音声ファイル名 すでに存在していれば利用 なければ作成 ファイル名を安全にするためシェルの特殊文字とスラッシュをアンダースコアで置換
-  output_file_name=$(printf "%s_%s_%s_%s_%s.wav" "$type" "$arg1" "$arg2" "$arg3" "$arg4" | sed 's/[*?[\]{}()&|;<>`"'"'"'\\$#\/]/_/g')
+  output_file_name=$(printf "%s_%s_%s_%s.wav" "$type" "$arg1" "$arg2" "$arg3" | sed 's/[*?[\]{}()&|;<>`"'"'"'\\$#\/]/_/g')
   output_file_path="${SOUND_DIR_PATH}${output_file_name}"
   
-  text=$arg4
+  text=$arg3
 
   # 音声ファイルがなければ作成
   if [[ ! -f $output_file_path ]]; then
     if [[ $type == "speak" ]]; then
-      _speak $output_file_path $arg1 $arg2 $arg3 $text
+      _speak $output_file_path $arg1 $arg2 $text
     elif [[ $type == "silent" ]]; then
       silent_time_s=$arg1
       sox -n -r 48000 -c 1 $output_file_path trim 0 $silent_time_s >/dev/null 2>&1
@@ -126,7 +126,7 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
       image_list_csv_str+="${page_total_sec_ceil},2,2,${IMAGE_DIR_PATH}image_$(printf "%04d" $page_id).png"$'\n'
       continue
     else
-      echo "未対応のtype: $type $arg1 $arg2 $arg3 $arg4"
+      echo "未対応のtype: $type $arg1 $arg2 $arg3"
       exit 1
     fi
   

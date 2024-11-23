@@ -19,7 +19,7 @@ SUBTITLE_CSV_FILE_PATH=${2:-"${DATA_DIR_PATH}generated/subtitle.csv"}
 IMAGE_LIST_FILE_PATH=${3:-"${DATA_DIR_PATH}generated/image_list.csv"}
 
 # input
-NARRATION_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
+NARRATION_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}narration_voicevox.csv"}
 IMAGE_DIR_PATH=${5:-"${SAMPLE_PROJECT_DIR_PATH}image_list_number/"}
 VOICE_ENGINE=${6:-"voicevox"}
 
