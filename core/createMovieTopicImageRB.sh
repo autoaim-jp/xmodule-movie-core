@@ -8,7 +8,7 @@ TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 RIGHT_BOTTOM_IMAGE=${1:-/tmp/right_bottom.png}
 
 # input
-FONT_FILE_PATH=${2:-/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Bold.otf}
+FONT_FILE_PATH=${2:-"${SCRIPT_DIR_PATH}../SourceHanSans-Bold.otf"}
 RIGHT_BOTTOM_TEXT=${3:-"このアプリの使い方"}
 
 # tmp

@@ -10,6 +10,7 @@ TITLE_IMG_FILE_PATH=${1:-/tmp/title.png}
 # input
 TITLE_TEXT=${2:-Webサービス名\n操作方法の紹介}
 LOGO_IMG_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
+FONT_FILE_PATH=${4:-"${SCRIPT_DIR_PATH}../SourceHanSans-Bold.otf"}
 
 # tmp
 TMP_IMG_FILE_PATH="${TMP_DIR_PATH}__title.png"
@@ -20,7 +21,7 @@ text_pos_x="+0"
 text_pos_y="-150"
 
 # 文字の画像を生成
-convert -size 1920x1080 xc:"#CCFFCC" -gravity center -pointsize 72 -font /usr/share/fonts/opentype/source-han-sans/SourceHanSans-Regular.otf -annotate "${text_pos_x}${text_pos_y}" "$TITLE_TEXT" $TMP_IMG_FILE_PATH
+convert -size 1920x1080 xc:"#CCFFCC" -gravity center -pointsize 72 -font $FONT_FILE_PATH -annotate "${text_pos_x}${text_pos_y}" "$TITLE_TEXT" $TMP_IMG_FILE_PATH
 
 # ロゴ画像をリサイズ
 convert $LOGO_IMG_FILE_PATH -resize 500x $TMP_RESIZED_LOGO_PATH

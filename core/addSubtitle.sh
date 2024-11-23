@@ -10,6 +10,7 @@ SUBTITLE_MOVIE_FILE_PATH=${1:-/tmp/subtitle.mp4}
 # input
 CONCAT_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}concat_movie.mp4"}
 SUBTITLE_TEXT_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}subtitle.csv"}
+FONT_FILE_PATH=${4:-"${SCRIPT_DIR_PATH}../SourceHanSans-Bold.otf"}
 
 # tmp
 TEXT_FILE_DIR_PATH=${TMP_DIR_PATH}subtitle_text/
@@ -32,7 +33,7 @@ while IFS=',' read -r start end _text; do
   echo -e "$text" > "$text_file_path"
 
   # 字幕設定
-  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=/usr/share/fonts/opentype/source-han-sans/SourceHanSans-Regular.otf:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=24:x=(w-text_w)/2:y=h-75:enable='between(t,${start},${end})',"
+  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=24:x=(w-text_w)/2:y=h-75:enable='between(t,${start},${end})',"
 
   # カウントアップ
   ((n++))
