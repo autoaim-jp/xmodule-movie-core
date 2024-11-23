@@ -10,7 +10,7 @@ TITLE_IMG_FILE_PATH=${1:-/tmp/title.png}
 # input
 TITLE_TEXT=${2:-Webサービス名\n操作方法の紹介}
 LOGO_IMG_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
-FONT_FILE_PATH=${4:-"${SCRIPT_DIR_PATH}../SourceHanSans-Bold.otf"}
+FONT_FILE_PATH=${4:-"${SCRIPT_DIR_PATH}../asset/SourceHanSans-Bold.otf"}
 
 # tmp
 TMP_IMG_FILE_PATH="${TMP_DIR_PATH}__title.png"

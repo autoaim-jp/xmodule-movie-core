@@ -18,7 +18,7 @@ fi
 TITLE_TEXT=${2:-"Sampleアプリ\n操作方法の紹介"}
 LOGO_IMG_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}logo.webp"}
 TITLE_SEC=${4:-5}
-FONT_FILE_PATH=${5:-"${ROOT_DIR_PATH}SourceHanSans-Bold.otf"}
+FONT_FILE_PATH=${5:-"${ROOT_DIR_PATH}asset/SourceHanSans-Bold.otf"}
 
 # tmp 
 TMP_DIR_PATH=${DATA_DIR_PATH}tmp/title_movie/

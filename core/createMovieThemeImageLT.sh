@@ -8,7 +8,7 @@ SCRIPT_DIR_PATH=$(dirname "$0")/
 LEFT_TOP_IMAGE=${1:-/tmp/left_top.png}
 
 # input
-FONT_FILE_PATH=${2:-"${SCRIPT_DIR_PATH}../SourceHanSans-Bold.otf"}
+FONT_FILE_PATH=${2:-"${SCRIPT_DIR_PATH}../asset/SourceHanSans-Bold.otf"}
 LEFT_TOP_TEXT=${3:-"株式グラフ管理Webアプリ"}
 
 # 左上の画像作成
