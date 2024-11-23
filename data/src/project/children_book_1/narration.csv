@@ -2,6 +2,7 @@
 # type,arg1,arg2,arg3,arg4
 # speak,f1,100,happy=0_fun=0,こんにちは
 # silent,3
+engine,voicepeak
 
 # タイトル
 silent,1

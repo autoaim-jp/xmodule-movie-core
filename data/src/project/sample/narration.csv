@@ -2,6 +2,7 @@
 # type,arg1,arg2,arg3,arg4
 # speak,f1,100,happy=0,こんにちは
 # silent,3
+engine,voicepeak
 silent,2
 speak,f1,150,happy=0,こんにちは。本日は、財務情報をグラフ化して管理できるWebサービスを紹介します。
 silent,1

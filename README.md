@@ -40,7 +40,6 @@ OUTPUTは /tmp/
 │   │   └── sound  
 │   ├── src 処理で使うリソース。主にメイン処理(/*.sh)で渡す。  
 │   │   └── project プロジェクトごとにリソースを管理  
-│   │       ├── my_project  
 │   │       └── sample サンプルプロジェクト。コア処理(/core/*.sh)のデフォルト引数。  
 │   │           ├── asset  
 │   │           ├── image_list  
