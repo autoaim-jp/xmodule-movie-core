@@ -10,6 +10,8 @@
 # 各文章のあとはsilent,1,,,の行
 # 各ページの最後はend-page,,,,の行、その後にsilent,3,,,の行
 
+
+ENGINE_NAME=$(basename "$0" .sh)
 SCRIPT_DIR_PATH=$(dirname "$0")/
 SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 ##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
@@ -28,7 +30,7 @@ NARRATION_FILE_PATH=${5:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
 IMAGE_DIR_PATH=${6:-/tmp/image/}
 
 # other
-LINE_NUMBER=0
+CSV_ENGINE_NAME=""
 
 # ナレーターの変換用
 declare -A NARRATOR_LIST=(
@@ -51,10 +53,10 @@ function _speak() {
   TEXT=$5
   echo $output_file_path
   if [[ -n "${NARRATOR_LIST[$_NARRATOR]}" ]]; then
-      NARRATOR=${NARRATOR_LIST[$_NARRATOR]}
+    NARRATOR=${NARRATOR_LIST[$_NARRATOR]}
   else
-      echo "未対応のナレーター: $_NARRATOR"
-	  exit 1
+    echo "未対応のナレーター: $_NARRATOR"
+    exit 1
   fi
 
   # 感情のパラメータの区切り文字 _ を , に置換する。csvのため_で区切ってある。
@@ -91,8 +93,18 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
     continue
   fi
 
-  # 行数をインクリメント
-  ((LINE_NUMBER++))
+  # 音声合成エンジン判定。csvの最初の行でengineを指定する必要がある。
+  if [[ "$type" = "engine" ]]; then
+    CSV_ENGINE_NAME="$arg1"
+    echo "音声合成エンジンが指定されました: ${CSV_ENGINE_NAME}"
+    continue
+  fi
+  if [[ "$CSV_ENGINE_NAME" != "$ENGINE_NAME" ]]; then
+    echo "音声合成エンジン名が正しくありません。"
+    echo "想定: ${ENGINE_NAME}, 実態: ${CSV_ENGINE_NAME:-未指定}"
+    exit 1
+  fi
+
   # 音声ファイル名 すでに存在していれば利用 なければ作成 ファイル名を安全にするためシェルの特殊文字とスラッシュをアンダースコアで置換
   output_file_name=$(printf "%s_%s_%s_%s_%s.wav" "$type" "$arg1" "$arg2" "$arg3" "$arg4" | sed 's/[*?[\]{}()&|;<>`"'"'"'\\$#\/]/_/g')
   output_file_path="${SOUND_DIR_PATH}${output_file_name}"
