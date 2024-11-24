@@ -10,7 +10,7 @@ mkdir -p $OUTPUT_DIR
 
 pushd $INPUT_DIR
 n=1
-find . -maxdepth 1 -type f -name "*.webp" -print0 | sort -zV | while IFS= read -r -d '' file; do
+find . -maxdepth 1 -type f -print0 | sort -zV | while IFS= read -r -d '' file; do
     echo "Processing: $file"
     convert "$file" "${OUTPUT_DIR}image_$(printf "%04d" $n).png"
     ((n++))
