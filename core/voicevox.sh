@@ -132,6 +132,8 @@ while IFS=',' read -r type arg1 arg2 arg3; do
   
     # 音声ファイルが生成できなければ異常終了
     if [[ ! -f $output_file_path ]]; then
+      echo $output_file_path $arg1 $arg2 $text
+      echo "音声ファイルが作成できませんでした。"
       exit 1
     fi
   fi
