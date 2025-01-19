@@ -30,10 +30,16 @@ while IFS=',' read -r start end _text; do
 
   # 一時ファイルに書き込み。改行コードを正しく処理するため。
   text_file_path=${TEXT_FILE_DIR_PATH}${n}.txt
-  echo -e "$text" > "$text_file_path"
-
+  echo -e "$text" | python3 -c "
+import sys
+input_text = sys.stdin.read().strip()
+n = 40
+print('\n'.join([input_text[i:i+n] for i in range(0, len(input_text), n)]))
+"> "$text_file_path"
+ 
   # 字幕設定
-  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=36:x=(w-text_w)/2:y=h-75:enable='between(t,${start},${end})',"
+  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=36:x=(w-text_w)/2:y=h-100:enable='between(t,${start},${end})',"
+
 
   # カウントアップ
   ((n++))
