@@ -19,7 +19,7 @@ TITLE_TEXT=${3} # 物語のタイトル
 TITLE_IMAGE_FILE_PATH=${4} # 物語の表紙画像
 TELOP_TEXT=${5} # 右上のテロップ
 IMAGE_DIR_PATH=${6} # 挿絵画像のディレクトリ
-VOICE_ENGINE=${7} # voicepeak or voicevox
+VOICE_ENGINE=${7} # voicepeak, voicevox or openai
 
 # tmp
 mkdir -p "$TMP_DIR_PATH"
