@@ -33,7 +33,7 @@ while IFS=',' read -r start end _text; do
   echo -e "$text" > "$text_file_path"
 
   # 字幕設定
-  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=24:x=(w-text_w)/2:y=h-75:enable='between(t,${start},${end})',"
+  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=36:x=(w-text_w)/2:y=h-75:enable='between(t,${start},${end})',"
 
   # カウントアップ
   ((n++))
