@@ -21,7 +21,8 @@ text_pos_x="+0"
 text_pos_y="-150"
 
 # 文字の画像を生成
-convert -size 1920x1080 xc:"#CCFFCC" -gravity center -pointsize 72 -font $FONT_FILE_PATH -annotate "${text_pos_x}${text_pos_y}" "$TITLE_TEXT" $TMP_IMG_FILE_PATH
+# convert -size 1920x1080 xc:"#CCFFCC" -gravity center -pointsize 72 -font $FONT_FILE_PATH -annotate "${text_pos_x}${text_pos_y}" "$TITLE_TEXT" $TMP_IMG_FILE_PATH
+convert -size 1920x1080 xc:"#004896" -gravity center -pointsize 72 -font $FONT_FILE_PATH -annotate "${text_pos_x}${text_pos_y}" "$TITLE_TEXT" $TMP_IMG_FILE_PATH
 
 # ロゴ画像をリサイズ
 convert $LOGO_IMG_FILE_PATH -resize 500x $TMP_RESIZED_LOGO_PATH
