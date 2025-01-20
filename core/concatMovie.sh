@@ -12,9 +12,12 @@ TITLE_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}title_movie.mp4"}
 MAIN_PART_MOVIE_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}main_part.mp4"}
 
 ending_file_list=(
-  "logo_rotate.mp4"
-  "logo_rotate2.mp4"
-  "logo_rotate3.mp4"
+  "0520.mp4"
+  "0520_reverse.mp4"
+  "0729.mp4"
+  "0729_reverse.mp4"
+  "0730.mp4"
+  "0730_reverse.mp4"
 )
 
 # ランダムに1つ選択
