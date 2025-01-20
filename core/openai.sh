@@ -43,7 +43,9 @@ CSV_ENGINE_NAME=""
 declare -A NARRATOR_LIST=(
   [n]="shimmer"
   [f1]="nova"
+  [f2]="nova"
   [m1]="echo"
+  [m2]="echo"
 )
 
 # 音声ファイルを作成
@@ -61,11 +63,12 @@ function _speak() {
     exit 1
   fi
 
-  JSON_STR=$(jq -n --arg prompt "$TEXT" --arg model "$MODEL_NAME" --arg voice "$NARRATOR" \
+  JSON_STR=$(jq -n --arg prompt "$TEXT" --arg model "$MODEL_NAME" --arg voice "$NARRATOR" --arg speed "$SPEED" \
     '{
       model: $model,
       input: $prompt,
       voice: $voice,
+      speed: $speed,
       response_format: "wav"
     }')
 
