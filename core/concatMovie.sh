@@ -10,7 +10,16 @@ CONCAT_MOVIE_FILE_PATH=${1:-/tmp/concat.mp4}
 # input
 TITLE_MOVIE_FILE_PATH=${2:-"${SAMPLE_PROJECT_DIR_PATH}title_movie.mp4"}
 MAIN_PART_MOVIE_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}main_part.mp4"}
-LOGO_ROTATE_MOVIE_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}logo_rotate.mp4"}
+
+ending_file_list=(
+  "logo_rotate.mp4"
+  "logo_rotate2.mp4"
+  "logo_rotate3.mp4"
+)
+
+# ランダムに1つ選択
+random_index=$((RANDOM % ${#ending_file_list[@]}))
+LOGO_ROTATE_MOVIE_FILE_PATH=${4:-"${SAMPLE_PROJECT_DIR_PATH}${ending_file_list[random_index]}"}
 
 # tmp
 REENCODED_TITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__title_reencoded.mp4"
