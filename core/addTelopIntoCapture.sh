@@ -34,5 +34,5 @@ ffmpeg -y -i "$CAPTURE_MOVIE_FILE_PATH" -i "$RT_OWNER_IMAGE_FILE_PATH" -i "$LT_T
     [tmp1][lt]overlay=x=20:y=20[tmp2]; \
     [tmp2][rb]overlay=x=W-w-10:y=H-h-10[tmp3]; \
     [tmp3][lb]overlay=x=20:y=H-${left_bottom_image_height}-20" \
--c:v libx264 -pix_fmt yuv420p $MAIN_PART_MOVIE_FILE_PATH
+-c:v h264_nvenc $MAIN_PART_MOVIE_FILE_PATH
 
