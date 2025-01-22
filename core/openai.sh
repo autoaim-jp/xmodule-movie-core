@@ -13,9 +13,12 @@
 
 ENGINE_NAME=$(basename "$0" .sh)
 SCRIPT_DIR_PATH=$(dirname "$0")/
+
+source ${SCRIPT_DIR_PATH}../.env
 SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
-##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
-VOICEVOX_SERVER="http://voicevox:50021" # dockerならコンテナ名にvoicevoxを、ローカル実行なら/etc/hostsにvoicevox=127.0.0.2を指定
+TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
+API_URL='https://api.openai.com/v1/audio/speech'
+MODEL_NAME='tts-1'
 
 # output
 WAV_LIST_FILE_PATH=${1:-/tmp/wav_list_for_ffmpeg.txt}
@@ -30,19 +33,19 @@ NARRATION_FILE_PATH=${5:-"${SAMPLE_PROJECT_DIR_PATH}narration.csv"}
 # image_list.csv用ロジック
 IMAGE_DIR_PATH=${6:-/tmp/image/}
 
+CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
+TMP_WAV_FILE_PATH=${TMP_DIR_PATH}${CURRENT_TIME}.wav
+
 # other
 CSV_ENGINE_NAME=""
 
 # ナレーターの変換用
 declare -A NARRATOR_LIST=(
-  [fc]="1" # ずんだもん
-  [m1]="11" # 玄野武宏
-  [m2]="12" # 青山龍星
-  [m3]="13" # 剣崎雌雄
-  [n]="2" # 四国めたん
-  [f1]="4" # 四国めたん
-  [f2]="1" # ずんだもん
-  [f3]="7" # 春日部つむぎ
+  [n]="shimmer"
+  [f1]="nova"
+  [f2]="nova"
+  [m1]="echo"
+  [m2]="echo"
 )
 
 # 音声ファイルを作成
@@ -60,21 +63,28 @@ function _speak() {
     exit 1
   fi
 
-  curl -s -X POST "${VOICEVOX_SERVER}/audio_query?speaker=${NARRATOR}" \
-       --get --data-urlencode text="${TEXT}" | \
-  jq '.speedScale = '$SPEED | \
-  jq '.intonation_scale = 1.4' | \
-  jq '.outputSamplingRate = 48000' | \
-  curl -s -X POST -H "Content-Type: application/json" \
-       -d @- "${VOICEVOX_SERVER}/synthesis?speaker=${NARRATOR}" > $output_file_path
+  JSON_STR=$(jq -n --arg prompt "$TEXT" --arg model "$MODEL_NAME" --arg voice "$NARRATOR" --arg speed "$SPEED" \
+    '{
+      model: $model,
+      input: $prompt,
+      voice: $voice,
+      speed: $speed,
+      response_format: "wav"
+    }')
+
+  curl -X POST $API_URL \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OPENAI_CHATGPT_API_KEY" \
+    -d "$JSON_STR" -o $TMP_WAV_FILE_PATH
   
   if [[ $? -eq 0 ]]; then
     echo "音声ファイルの作成に成功。"
-    return 0
   else
     echo "音声ファイルの作成に失敗しました。終了します。"
     return 1
   fi
+
+  sox $TMP_WAV_FILE_PATH -r 48000 $output_file_path
 }
 
 last_total_sec=0

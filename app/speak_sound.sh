@@ -40,6 +40,12 @@ elif [[ "$VOICE_ENGINE" == "voicevox" ]]; then
     echo "異常終了しました。"
     exit 1
   fi
+elif [[ "$VOICE_ENGINE" == "openai" ]]; then
+  ${ROOT_DIR_PATH}core/openai.sh $WAV_LIST_FILE_PATH $SOUND_DIR_PATH $SUBTITLE_CSV_FILE_PATH $IMAGE_LIST_FILE_PATH $NARRATION_FILE_PATH $IMAGE_DIR_PATH
+  if [[ $? -ne 0 ]]; then
+    echo "異常終了しました。"
+    exit 1
+  fi
 else
   echo "不正なVOICE_ENGINEです。想定: voicepeak or voicevox, 実態: ${VOICE_ENGINE}"
   exit 1

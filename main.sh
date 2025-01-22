@@ -7,7 +7,8 @@ CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
 TMP_DIR_PATH="${DATA_DIR_PATH}tmp/tmp/${PROJECT_NAME}_${CURRENT_TIME}/"
 PROJECT_NAME="children_book_2"
 FONT_FILE_PATH="${ROOT_DIR_PATH}asset/SourceHanSans-Bold.otf"
-BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_ccffcc.png" # 背景画像パス
+#BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_ccffcc.png" # 背景画像パス
+BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_004896.png" # 背景画像パス
 
 # output
 OUTPUT_MOVIE_FILE_PATH=${1} # result.mp4
@@ -18,7 +19,7 @@ TITLE_TEXT=${3} # 物語のタイトル
 TITLE_IMAGE_FILE_PATH=${4} # 物語の表紙画像
 TELOP_TEXT=${5} # 右上のテロップ
 IMAGE_DIR_PATH=${6} # 挿絵画像のディレクトリ
-VOICE_ENGINE=${7} # voicepeak or voicevox
+VOICE_ENGINE=${7} # voicepeak, voicevox or openai
 
 # tmp
 mkdir -p "$TMP_DIR_PATH"
@@ -45,9 +46,10 @@ ${ROOT_DIR_PATH}app/main_part_from_image_list.sh "$TMP_MAIN_PART_MOVIE_FILE_PATH
 
 ${ROOT_DIR_PATH}app/concat_movie.sh "$TMP_CONCAT_MOVIE_FILE_PATH" "$TMP_TITLE_MOVIE_FILE_PATH" "$TMP_MAIN_PART_MOVIE_FILE_PATH" "$TMP_SOUND_FILE_PATH"
 
-${ROOT_DIR_PATH}app/subtitle_movie.sh "$TMP_SUBTITLE_MOVIE_FILE_PATH" "$TMP_CONCAT_MOVIE_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$FONT_FILE_PATH"
+${ROOT_DIR_PATH}app/subtitle_movie.sh "$OUTPUT_MOVIE_FILE_PATH" "$TMP_CONCAT_MOVIE_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$FONT_FILE_PATH"
 
-${ROOT_DIR_PATH}lib/adjust_volume.sh "$OUTPUT_MOVIE_FILE_PATH" "$TMP_SUBTITLE_MOVIE_FILE_PATH" 0.5
+# ${ROOT_DIR_PATH}app/subtitle_movie.sh "$TMP_SUBTITLE_MOVIE_FILE_PATH" "$TMP_CONCAT_MOVIE_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$FONT_FILE_PATH"
+# ${ROOT_DIR_PATH}lib/adjust_volume.sh "$OUTPUT_MOVIE_FILE_PATH" "$TMP_SUBTITLE_MOVIE_FILE_PATH" 0.5
 
 echo "作成した動画: $OUTPUT_MOVIE_FILE_PATH"
 
