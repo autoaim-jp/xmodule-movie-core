@@ -46,10 +46,11 @@ print('\n'.join([input_text[i:i+n] for i in range(0, len(input_text), n)]))
 done < $SUBTITLE_TEXT_FILE_PATH
 
 # 最後のカンマを消す
-filter_text=${filter_text:0:-1}
+# filter_text=${filter_text:0:-1}
+filter_text="${filter_text}format=yuv420p"
 
 # 字幕を動画につける
-ffmpeg -y -i $CONCAT_MOVIE_FILE_PATH -vf $filter_text $SUBTITLE_MOVIE_FILE_PATH
+ffmpeg -y -i $CONCAT_MOVIE_FILE_PATH -vf $filter_text -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 2M -preset fast -c:a copy $SUBTITLE_MOVIE_FILE_PATH
 
 # 一時ディレクトリを削除する
 rm -rf $TEXT_FILE_DIR_PATH
