@@ -16,7 +16,7 @@ TMP_FADEIN_FILE_PATH="${TMP_DIR_PATH}__fadein.mp4"
 
 # other
 
-ffmpeg -y -loop 1 -framerate 60 -i $TITLE_IMG_FILE_PATH -vf "fade=in:0:30" -t ${TITLE_SEC} -c:v h264_nvenc -b:v 2M -preset fast $TMP_FADEIN_FILE_PATH
+ffmpeg -y -loop 1 -framerate 60 -i $TITLE_IMG_FILE_PATH -vf "fade=in:0:30,format=yuv420p" -t ${TITLE_SEC} -c:v h264_nvenc -b:v 2M -preset fast $TMP_FADEIN_FILE_PATH
      
-ffmpeg -y -i $TMP_FADEIN_FILE_PATH -vf "fade=out:120:30" -c:v h264_nvenc -b:v 2M -preset fast $TITLE_MOVIE_FILE_PATH
+ffmpeg -y -i $TMP_FADEIN_FILE_PATH -vf "fade=out:120:30,format=yuv420p" -c:v h264_nvenc -b:v 2M -preset fast $TITLE_MOVIE_FILE_PATH
 
