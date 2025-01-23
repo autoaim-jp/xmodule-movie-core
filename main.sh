@@ -9,6 +9,7 @@ PROJECT_NAME="children_book_2"
 FONT_FILE_PATH="${ROOT_DIR_PATH}asset/SourceHanSans-Bold.otf"
 #BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_ccffcc.png" # 背景画像パス
 BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_004896.png" # 背景画像パス
+CENTER_BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_004896_1024.png" # 中央画像の背景画像パス
 
 # output
 OUTPUT_MOVIE_FILE_PATH=${1} # result.mp4
@@ -42,7 +43,7 @@ ${ROOT_DIR_PATH}app/title_movie.sh "$TMP_TITLE_MOVIE_FILE_PATH" "$TITLE_TEXT" "$
 
 ${ROOT_DIR_PATH}app/telop_image.sh - - "$TMP_RT_FILE_PATH" - - "$TELOP_TEXT" "$FONT_FILE_PATH"
 
-${ROOT_DIR_PATH}app/main_part_from_image_list.sh "$TMP_MAIN_PART_MOVIE_FILE_PATH" "$TMP_IMAGE_LIST_FILE_PATH" "$BACKGROUND_IMAGE_FILE_PATH" x "$TMP_RT_FILE_PATH" x x
+${ROOT_DIR_PATH}app/main_part_from_image_list.sh "$TMP_MAIN_PART_MOVIE_FILE_PATH" "$TMP_IMAGE_LIST_FILE_PATH" "$BACKGROUND_IMAGE_FILE_PATH" x "$TMP_RT_FILE_PATH" x x "$CENTER_BACKGROUND_IMAGE_FILE_PATH"
 
 ${ROOT_DIR_PATH}app/concat_movie.sh "$TMP_CONCAT_MOVIE_FILE_PATH" "$TMP_TITLE_MOVIE_FILE_PATH" "$TMP_MAIN_PART_MOVIE_FILE_PATH" "$TMP_SOUND_FILE_PATH"
 
