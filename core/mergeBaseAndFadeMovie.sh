@@ -40,10 +40,10 @@ cat $CENTER_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fa
 
     # 画像からフェード動画作成 背景は透明で、フェードイン、表示、フェードアウトする動画パーツ
     fade_out_start=$((part_sec - fade_out_sec))
-    ffmpeg -y -loop 1 -i $file_path -vf "scale=${center_image_width}:${center_image_height},format=rgba,fade=t=in:st=0:d=${fade_in_sec}:alpha=1,fade=t=out:st=${fade_out_start}:d=${fade_out_sec}:alpha=1" -t ${part_sec} -c:v h264_nvenc $FADE_MOVIE_PATH < /dev/null
+    ffmpeg -y -loop 1 -i $file_path -vf "scale=${center_image_width}:${center_image_height},format=rgba,fade=t=in:st=0:d=${fade_in_sec}:alpha=1,fade=t=out:st=${fade_out_start}:d=${fade_out_sec}:alpha=1,format=yuv420p" -t ${part_sec} -c:v h264_nvenc -b:v 2M -preset fast $FADE_MOVIE_PATH < /dev/null
     
     # ベース動画とフェード動画から動画パート作成
-    ffmpeg -y -i $BASE_MOVIE_FILE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,0,${part_sec})'" -c:a copy -c:v h264_nvenc $movie_part_file_path < /dev/null
+    ffmpeg -y -i $BASE_MOVIE_FILE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,0,${part_sec})'" -c:a copy -c:v h264_nvenc -b:v 2M -preset fast $movie_part_file_path < /dev/null
 
     # 結合するファイル一覧にファイルパス追加
     echo "file '${movie_part_file_path}'" >> $MOVIE_PART_LIST_FILE_PATH
