@@ -13,12 +13,14 @@ MAIN_PART_MOVIE_FILE_PATH=${3:-"${SAMPLE_PROJECT_DIR_PATH}main_part.mp4"}
 
 ending_file_list=(
   "0520.mp4"
-  "0520_reverse.mp4"
-  "0729.mp4"
-  "0729_reverse.mp4"
-  "0730.mp4"
-  "0730_reverse.mp4"
 )
+# debug
+#   "0520_reverse.mp4"
+#   "0729.mp4"
+#   "0729_reverse.mp4"
+#   "0730.mp4"
+#   "0730_reverse.mp4"
+ 
 
 # ランダムに1つ選択
 random_index=$((RANDOM % ${#ending_file_list[@]}))

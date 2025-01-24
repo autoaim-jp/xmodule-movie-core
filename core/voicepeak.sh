@@ -123,6 +123,8 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
       ((page_id++))
       page_total_sec=0
       continue
+    elif [[ $type == "file" ]]; then
+      cp -p "${SOUND_DIR_PATH}${arg1}" $output_file_path
     elif [[ $type == "end-page" ]]; then
       # image_list.csv用ロジック
       page_total_sec_ceil=$(echo "$page_total_sec" | awk '{print int($1)+($1>int($1))}')
