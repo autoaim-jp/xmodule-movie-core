@@ -38,7 +38,10 @@ print('\n'.join([input_text[i:i+n] for i in range(0, len(input_text), n)]))
 "> "$text_file_path"
  
   # 字幕設定
-  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=36:x=(w-text_w)/2:y=h-100:enable='between(t,${start},${end})',"
+  # filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x333333@0.8:fontsize=36:x=(w-text_w)/2:y=h-100:enable='between(t,${start},${end})',"
+  # debug
+  # filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x004896@0.7:fontsize=36:x=(w-text_w)/2:y=40:enable='between(t,${start},${end})',"
+  filter_text="${filter_text}drawtext=textfile='${text_file_path}':fontfile=${FONT_FILE_PATH}:fontcolor=white:boxborderw=10:box=1:boxcolor=0x575757@0.7:fontsize=36:x=(w-text_w)/2:y=40:enable='between(t,${start},${end})',"
 
 
   # カウントアップ

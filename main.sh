@@ -4,8 +4,8 @@
 ROOT_DIR_PATH=${PWD}/
 DATA_DIR_PATH="${ROOT_DIR_PATH}data/"
 CURRENT_TIME=$(date '+%Y%m%d_%H%M%S')
-TMP_DIR_PATH="${DATA_DIR_PATH}tmp/tmp/${PROJECT_NAME}_${CURRENT_TIME}/"
 PROJECT_NAME="children_book_2"
+TMP_DIR_PATH="${DATA_DIR_PATH}tmp/tmp/${PROJECT_NAME}_${CURRENT_TIME}/"
 FONT_FILE_PATH="${ROOT_DIR_PATH}asset/SourceHanSans-Bold.otf"
 #BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_ccffcc.png" # 背景画像パス
 BACKGROUND_IMAGE_FILE_PATH="${DATA_DIR_PATH}src/project/children_book_1/bg_004896.png" # 背景画像パス
