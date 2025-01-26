@@ -4,5 +4,5 @@ file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/3
 file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/42_12.mp4'
 file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/50_12.mp4'
 file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/60_10.mp4'
-file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/62_15.mp4'
-file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/70_122.mp4'
+file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/62_16.mp4'
+file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event1/cut/70_123.mp4'
