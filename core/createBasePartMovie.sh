@@ -47,7 +47,7 @@ if [[ "$RT_OWNER_IMAGE_FILE_PATH" == "x" && \
   ffmpeg -y -i "$BACKGROUND_IMAGE_FILE_PATH" \
   -filter_complex "\
       [0:v]scale=${output_width}:${output_height}" \
-  -c:v libx264 -t $total_part_sec -pix_fmt yuv420p $BASE_MOVIE_FILE_PATH
+  -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast -t $total_part_sec $BASE_MOVIE_FILE_PATH
 
 elif [[ "$RT_OWNER_IMAGE_FILE_PATH" == "x" && \
       "$LT_THEME_IMAGE_FILE_PATH" != "x" && \
@@ -60,7 +60,7 @@ elif [[ "$RT_OWNER_IMAGE_FILE_PATH" == "x" && \
       [1:v]scale=380:100[lt]; \
       [bg][lt]overlay=x=W-w-10:y=20 \
       " \
-  -c:v libx264 -t $total_part_sec -pix_fmt yuv420p $BASE_MOVIE_FILE_PATH
+  -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast -t $total_part_sec $BASE_MOVIE_FILE_PATH
 else
 
   echo "テロップあり すべて"
@@ -75,6 +75,6 @@ else
       [bg_with_left_top_image][scaled_right_top_image]overlay=x=W-w-10:y=20[bg_with_right_top_image]; \
       [bg_with_right_top_image][bottom_left_img]overlay=x=20:y=H-${left_bottom_image_height}-20[bg_with_left_bottom_image]; \
       [bg_with_left_bottom_image][scaled_right_bottom_image]overlay=x=W-w-10:y=H-h-10" \
-  -c:v libx264 -t $total_part_sec -pix_fmt yuv420p $BASE_MOVIE_FILE_PATH
+  -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast -t $total_part_sec $BASE_MOVIE_FILE_PATH
 fi
 

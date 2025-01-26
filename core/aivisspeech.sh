@@ -15,6 +15,7 @@ ENGINE_NAME=$(basename "$0" .sh)
 SCRIPT_DIR_PATH=$(dirname "$0")/
 SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
 ##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
+VOICEVOX_SERVER="http://aivisspeech:10101" # dockerならコンテナ名にaivisspeechを、ローカル実行なら/etc/hostsにaivisspeech=127.0.0.3を指定
 
 # output
 WAV_LIST_FILE_PATH=${1:-/tmp/wav_list_for_ffmpeg.txt}
@@ -33,14 +34,11 @@ IMAGE_DIR_PATH=${6:-/tmp/image/}
 CSV_ENGINE_NAME=""
 
 # ナレーターの変換用
+#  [n]="888753760" # anneli 若い女明るい
 declare -A NARRATOR_LIST=(
-  [fc]="Japanese Female Child"
-  [m1]="Japanese Male 1"
-  [m2]="Japanese Male 2"
-  [m3]="Japanese Male 3"
-  [f1]="Japanese Female 1"
-  [f2]="Japanese Female 2"
-  [f3]="Japanese Female 3"
+  [m1]="606865152" # fumifumi 若い男
+  [n]="1275216064" # 観測症 中年男
+  [f1]="497929760" # morioki 若い女落ち着いた
 )
 
 # 音声ファイルを作成
@@ -49,8 +47,7 @@ function _speak() {
   output_file_path=$1
   _NARRATOR=$2
   SPEED=$3
-  _EMOTION_EXPR=$4
-  TEXT=$5
+  TEXT=$4
   echo $output_file_path
   if [[ -n "${NARRATOR_LIST[$_NARRATOR]}" ]]; then
     NARRATOR=${NARRATOR_LIST[$_NARRATOR]}
@@ -59,23 +56,20 @@ function _speak() {
     exit 1
   fi
 
-  # 感情のパラメータの区切り文字 _ を , に置換する。csvのため_で区切ってある。
-  EMOTION_EXPR="${_EMOTION_EXPR//_/,}"
-
-  ~/application/Voicepeak/voicepeak -o $output_file_path -n "$NARRATOR" --speed $SPEED -e "$EMOTION_EXPR" -s "$TEXT" 2>/dev/null
+  curl -s -X POST "${VOICEVOX_SERVER}/audio_query?speaker=${NARRATOR}" \
+       --get --data-urlencode text="${TEXT}" | \
+  jq '.speedScale = '$SPEED | \
+  jq '.intonation_scale = 1.4' | \
+  jq '.outputSamplingRate = 48000' | \
+  curl -s -X POST -H "Content-Type: application/json" \
+       -d @- "${VOICEVOX_SERVER}/synthesis?speaker=${NARRATOR}" > $output_file_path
+  
   if [[ $? -eq 0 ]]; then
     echo "音声ファイルの作成に成功。"
     return 0
   else
-    echo "音声ファイルの作成に失敗しました。再度生成します。"
-    echo "$output_file_path,$_NARRATOR,$NARRATOR,$SPEED,$EMOTION_EXPR,$TEXT"
-    sleep 3
-    ~/application/Voicepeak/voicepeak -o $output_file_path -n "$NARRATOR" --speed $SPEED -e "$EMOTION_EXPR" -s "$TEXT" 2>/dev/null
-    if [[ $? -ne 0 ]]; then
-      echo "音声ファイルの作成に失敗しました。終了します。"
-      return 1
-    fi
-    return 0
+    echo "音声ファイルの作成に失敗しました。終了します。"
+    return 1
   fi
 }
 
@@ -87,7 +81,7 @@ subtitle_csv_str=""
 image_list_csv_str=""
 
 # CSVファイルを行ごとに処理
-while IFS=',' read -r type arg1 arg2 arg3 arg4; do
+while IFS=',' read -r type arg1 arg2 arg3; do
   # 空行と#から始まるコメント行は無視
   if [[ -z "$type" || "$type" == \#* ]]; then
     continue
@@ -106,15 +100,15 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
   fi
 
   # 音声ファイル名 すでに存在していれば利用 なければ作成 ファイル名を安全にするためシェルの特殊文字とスラッシュをアンダースコアで置換
-  output_file_name=$(printf "%s_%s_%s_%s_%s.wav" "$type" "$arg1" "$arg2" "$arg3" "$arg4" | sed 's/[*?[\]{}()&|;<>`"'"'"'\\$#\/]/_/g')
+  output_file_name=$(printf "%s_%s_%s_%s.wav" "$type" "$arg1" "$arg2" "$arg3" | sed 's/[*?[\]{}()&|;<>`"'"'"'\\$#\/]/_/g')
   output_file_path="${SOUND_DIR_PATH}${output_file_name}"
   
-  text=$arg4
+  text=$arg3
 
   # 音声ファイルがなければ作成
   if [[ ! -f $output_file_path ]]; then
     if [[ $type == "speak" ]]; then
-      _speak $output_file_path $arg1 $arg2 $arg3 $text
+      _speak $output_file_path $arg1 $arg2 $text
     elif [[ $type == "silent" ]]; then
       silent_time_s=$arg1
       sox -n -r 48000 -c 1 $output_file_path trim 0 $silent_time_s >/dev/null 2>&1
@@ -123,21 +117,19 @@ while IFS=',' read -r type arg1 arg2 arg3 arg4; do
       ((page_id++))
       page_total_sec=0
       continue
-    elif [[ $type == "file" ]]; then
-      cp -p "${SOUND_DIR_PATH}${arg1}" $output_file_path
     elif [[ $type == "end-page" ]]; then
       # image_list.csv用ロジック
       page_total_sec_ceil=$(echo "$page_total_sec" | awk '{print int($1)+($1>int($1))}')
       image_list_csv_str+="${page_total_sec_ceil},2,2,${IMAGE_DIR_PATH}image_$(printf "%04d" $page_id).png"$'\n'
       continue
     else
-      echo "未対応のtype: $type $arg1 $arg2 $arg3 $arg4"
+      echo "未対応のtype: $type $arg1 $arg2 $arg3"
       exit 1
     fi
   
     # 音声ファイルが生成できなければ異常終了
     if [[ ! -f $output_file_path ]]; then
-      echo $output_file_path $arg1 $arg2 $arg3 $text
+      echo $output_file_path $arg1 $arg2 $text
       echo "音声ファイルが作成できませんでした。"
       exit 1
     fi
