@@ -21,13 +21,13 @@ if (( $(echo "$DURATION < $FADE_DURATION * 2" | bc -l) )); then
 fi
 
 # 1. 動画の切り取り
-ffmpeg -i "$INPUT_FILE" -ss "$START_TIME" -to "$END_TIME" -c:v h264_nvenc -b:v 2M -preset fast "$TEMP_FILE"
+ffmpeg -i "$INPUT_FILE" -ss "$START_TIME" -to "$END_TIME" -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast "$TEMP_FILE"
 
 # 2. フェードイン・フェードアウトの適用
 ffmpeg -i "$TEMP_FILE" \
   -vf "fade=t=in:st=0:d=$FADE_DURATION,fade=t=out:st=$(echo "$DURATION - $FADE_DURATION" | bc):d=$FADE_DURATION" \
   -af "afade=t=in:st=0:d=$FADE_DURATION,afade=t=out:st=$(echo "$DURATION - $FADE_DURATION" | bc):d=$FADE_DURATION" \
-   -c:v h264_nvenc -b:v 2M -preset fast "$OUTPUT_FILE"
+   -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast "$OUTPUT_FILE"
 
 # 一時ファイルを削除
 rm "$TEMP_FILE"
