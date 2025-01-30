@@ -13,7 +13,8 @@
 ./core/concatMovieFromList.sh ./data/src/project/event1/concat.mp4 ./data/src/project/event1/part_list.txt
 
 # concat.mp4の左上のURL部分を隠す
-./lib/hide.sh
+# ./lib/hide.sh ./data/src/project/event1/concat_hide.mp4 ./data/src/project/event1/concat.mp4
+./lib/hide.sh ./data/src/project/event1/capture.mp4 ./data/src/project/event1/capture_hide.mp4
 
 # 動画に音声と字幕をつける
 ./start.sh
