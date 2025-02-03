@@ -10,3 +10,12 @@ log/
 *.jpg
 *.wav
 
+!asset/src/project/sample/0520.mp4
+!asset/src/project/sample/0520_reverse.mp4
+!asset/src/project/sample/0729.mp4
+!asset/src/project/sample/0729_reverse.mp4
+!asset/src/project/sample/0730.mp4
+!asset/src/project/sample/0730_reverse.mp4
+!asset/src/project/children_book_1/bg_004896_1024.png
+!asset/src/project/children_book_1/bg_004896.png
+

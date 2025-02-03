@@ -39,7 +39,6 @@ OUTPUTは /tmp/
 ```
 .
 ├── app アプリケーションとして動かせる。core/を呼び出す
-├── asset 今はフォントファイルのみ
 ├── core コアのモジュール　インプットとアウトプットが明確  
 ├── data 各種データ
 │   ├── capture 画面キャプチャ
@@ -53,12 +52,13 @@ OUTPUTは /tmp/
 │   │   ├── subtitle_movie
 │   │   ├── telop_image
 │   │   └── title_movie
-│   ├── result 結果。start.shで指定
-│   │   ├── children_book_1
-│   │   ├── children_book_2
-│   │   ├── children_book_3
-│   │   ├── children_book_4
-│   │   └── event1
+│   └── result 結果。start.shで指定
+│        ├── children_book_1
+│        ├── children_book_2
+│        ├── children_book_3
+│        ├── children_book_4
+│        └── event1
+├── asset フォントファイルとsrc
 │   └── src
 │       └── project 各プロジェクトのデータ。生成後のものも格納するようになった
 │           ├── children_book_1
