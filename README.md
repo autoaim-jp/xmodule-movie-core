@@ -28,7 +28,7 @@ OUTPUTから渡す。OUTPUTは基本的に増えないから。
 
 ## coreの実装方針
 単体で動くようにする。  
-INPUTは data/src の sample/ から  
+INPUTは asset/src の sample/ から  
 OUTPUTは /tmp/  
 一時ファイルは data/tmp/tmp/__  (data/tmp/**/　は app側で指定)
 

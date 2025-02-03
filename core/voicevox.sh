@@ -13,7 +13,7 @@
 
 ENGINE_NAME=$(basename "$0" .sh)
 SCRIPT_DIR_PATH=$(dirname "$0")/
-SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../asset/src/project/sample/
 ##TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 VOICEVOX_SERVER="http://voicevox:50021" # dockerならコンテナ名にvoicevoxを、ローカル実行なら/etc/hostsにvoicevox=127.0.0.2を指定
 

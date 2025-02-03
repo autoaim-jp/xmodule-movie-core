@@ -1,0 +1,5 @@
+# find $(pwd)/data/src/project/sample/image_list_number/ -type f | sort
+6,3,1,/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/sample/image_list_number/image_0001.png
+6,3,1,/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/sample/image_list_number/image_0002.png
+6,3,1,/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/sample/image_list_number/image_0003.png
+

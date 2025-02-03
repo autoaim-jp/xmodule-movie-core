@@ -1,5 +1,12 @@
 .env
 
 *.swp
-data/tmp/
+data/
 log/
+
+*.mp4
+*.png
+*.webp
+*.jpg
+*.wav
+

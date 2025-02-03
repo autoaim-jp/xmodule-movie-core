@@ -15,7 +15,7 @@ ENGINE_NAME=$(basename "$0" .sh)
 SCRIPT_DIR_PATH=$(dirname "$0")/
 
 source ${SCRIPT_DIR_PATH}../.env
-SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../data/src/project/sample/
+SAMPLE_PROJECT_DIR_PATH=${SCRIPT_DIR_PATH}../asset/src/project/sample/
 TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 API_URL='https://api.openai.com/v1/audio/speech'
 MODEL_NAME='tts-1'

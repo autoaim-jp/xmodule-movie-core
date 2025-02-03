@@ -1,0 +1,66 @@
+# 2025/01/28 社内論文デモ
+# type,arg1,arg2,arg3,arg4
+# speak,f1,100,happy=0,こんにちは
+# silent,3
+
+engine,voicepeak
+# 導入
+speak,m1,100,happy=0,プロジェクト管理の図を作成、更新するツールをご紹介いたします。
+silent,2
+speak,m1,100,happy=0,画面キャプチャを倍速で再生しています。
+silent,3
+
+# ガントチャート 
+speak,m1,100,happy=0,まずはガントチャートを作成してみます。
+silent,1
+speak,m1,100,happy=0,内容は、ChatGPTにおまかせします。
+silent,4
+speak,m1,100,happy=0,図が表示されました。簡単ですね。
+silent,5
+speak,m1,100,happy=0,更新してみます。
+silent,7
+speak,m1,100,happy=0,更新されましたが、充分ではありません。
+silent,2
+speak,m1,100,happy=0,丁寧に指示してみます。
+silent,5
+speak,m1,100,happy=0,指示したとおりに更新されました。
+silent,3
+speak,m1,100,happy=0,チャットのやりとりで図が更新されています。
+silent,1
+
+# マインドマップ
+speak,m1,100,happy=0,2つ目は、マインドマップを作成してみます。
+silent,1
+speak,m1,100,happy=0,掲示板サイトを新規作成することを想定し、テンプレートを利用して機能を整理してみます。
+silent,2
+speak,m1,100,happy=0,作成されました。ページの追加をお願いしてみます。
+silent,5
+speak,m1,100,happy=0,更新されました。機能の詳細化をお願いします。
+silent,7
+speak,m1,100,happy=0,再度更新されました。
+silent,1
+speak,m1,100,happy=0,IDを使って指定することで、簡潔で明確に指示ができます。
+silent,33
+speak,m1,100,happy=0,指示したとおりに更新されました。
+silent,5
+
+# シーケンス図
+speak,m1,100,happy=0,最後は、シーケンス図を作成してみます。
+silent,1
+speak,m1,100,happy=0,先程作成したマインドマップをもとに、ベースのシーケンス図を作ってもらいます。
+silent,28
+speak,m1,100,happy=0,ある程度のものができましたが、誤りがあるため修正していく必要があります。
+silent,1
+speak,m1,100,happy=0,今回は修正ではなく、機能のシーケンスを追加表示してもらいます。
+silent,5
+speak,m1,100,happy=0,新機能を追加するとき、どこに処理を加えたらよいか、どんなシーケンス図になるかの相談ができます。
+silent,85
+
+# タグ
+speak,m1,100,happy=0,作成した画像、チャットはタグで管理ができます。
+silent,15
+speak,m1,100,happy=0,これで、ドキュメントの継続的な更新ができます。
+silent,9
+speak,m1,100,happy=0,以上です。ありがとうございました。
+silent,1
+

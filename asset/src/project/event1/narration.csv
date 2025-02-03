@@ -1,0 +1,24 @@
+# 2024/10/22 balance-sheet.xlogin.jp
+# type,arg1,arg2,arg3,arg4
+# speak,f1,100,happy=0,こんにちは
+# silent,3
+engine,voicepeak
+silent,2
+speak,f1,150,happy=0,こんにちは。
+silent,1
+speak,f1,150,happy=0,AIハッカソンでは、テーマとターゲットを入力するだけで、生成AIを活用して絵本が作れるWebサイトを発表しました
+silent,1
+speak,f1,150,happy=0,イベント後にも改良を重ねた結果、生成AIを駆使して、手軽に動画を作成、編集できるWebサイトになりました。
+silent,1
+speak,f1,150,happy=0,今回はそれを発表いたします。ナレーションスタジオ、略して　なれスタ！　です。
+silent,1
+speak,f1,150,happy=0,機能の紹介と、このWebサイトを使って実際に、社訓の大切さを伝える動画を作成します。
+silent,3
+speak,f1,150,happy=0,まず、動画のネタを入力します。
+silent,1
+speak,f1,150,happy=0,その後、ボタン[動画を新規作成]を押します。あとは3分待つだけです。
+silent,3
+speak,f1,150,happy=0,動画ができました。見てみましょう。
+silent,1
+speak,f1,150,happy=0,動画のストーリー、画像、音声をAIが生成し、サーバーで結合しています。
+

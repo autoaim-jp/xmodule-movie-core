@@ -4,7 +4,7 @@
 OUTPUT_DIR=${1:-"/tmp/asset_ordered/"}
 
 # input
-INPUT_DIR=${2:-"${PWD}/data/src/project/sample/image_list/"}
+INPUT_DIR=${2:-"${PWD}/asset/src/project/sample/image_list/"}
 
 mkdir -p $OUTPUT_DIR
 

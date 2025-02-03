@@ -1,0 +1,4 @@
+16,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_3/asset/3_1.webp
+16,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_3/asset/3_2.webp
+16,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_3/asset/3_3.webp
+16,2,2,/home/tokayupcg/list/simple/xmodule-movie-core/data/src/project/children_book_3/asset/3_4.webp

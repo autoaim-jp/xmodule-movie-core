@@ -1,0 +1,5 @@
+file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event2/cut/10_27.mp4'
+file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event2/cut/20_14.mp4'
+file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event2/cut/30_20.mp4'
+file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event2/cut/40_80.mp4'
+file '/home/tokayupcg/pj/xlogin/xmodule-movie-core/data/src/project/event2/cut/50_183.mp4'
