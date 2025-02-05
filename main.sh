@@ -24,8 +24,8 @@ VOICE_ENGINE=${7} # voicepeak, voicevox or openai
 
 # tmp
 mkdir -p "$TMP_DIR_PATH"
-TMP_ASSET_DIR_PATH="${TMP_DIR_PATH}__asset_ordered/"
-mkdir $TMP_ASSET_DIR_PATH
+# TMP_ASSET_DIR_PATH="${TMP_DIR_PATH}__asset_ordered/"
+# mkdir $TMP_ASSET_DIR_PATH
 TMP_SOUND_FILE_PATH="${TMP_DIR_PATH}__speak_sound.wav"
 TMP_SUBTITLE_FILE_PATH="${TMP_DIR_PATH}__subtitle.csv"
 TMP_TITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__title_movie.mp4"
@@ -35,9 +35,10 @@ TMP_CONCAT_MOVIE_FILE_PATH="${TMP_DIR_PATH}__concat_movie.mp4"
 TMP_SUBTITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__subtitle_movie.mp4"
 TMP_IMAGE_LIST_FILE_PATH="${TMP_DIR_PATH}__image_list.csv"
 
-${ROOT_DIR_PATH}lib/rename_number_image.sh "$TMP_ASSET_DIR_PATH" "$IMAGE_DIR_PATH"
+# 不要。image_XXXX.pngではなくX.pngを音声合成スクリプトが使用するように変更したため
+# ${ROOT_DIR_PATH}lib/rename_number_image.sh "$TMP_ASSET_DIR_PATH" "$IMAGE_DIR_PATH"
 
-${ROOT_DIR_PATH}app/speak_sound.sh "$TMP_SOUND_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$TMP_IMAGE_LIST_FILE_PATH" "$NARRATION_FILE_PATH" "$TMP_ASSET_DIR_PATH" "$VOICE_ENGINE"
+${ROOT_DIR_PATH}app/speak_sound.sh "$TMP_SOUND_FILE_PATH" "$TMP_SUBTITLE_FILE_PATH" "$TMP_IMAGE_LIST_FILE_PATH" "$NARRATION_FILE_PATH" "$IMAGE_DIR_PATH" "$VOICE_ENGINE"
 
 ${ROOT_DIR_PATH}app/title_movie.sh "$TMP_TITLE_MOVIE_FILE_PATH" "$TITLE_TEXT" "$TITLE_IMAGE_FILE_PATH" 8 "$FONT_FILE_PATH"
 

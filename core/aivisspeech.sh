@@ -120,7 +120,7 @@ while IFS=',' read -r type arg1 arg2 arg3; do
     elif [[ $type == "end-page" ]]; then
       # image_list.csv用ロジック
       page_total_sec_ceil=$(echo "$page_total_sec" | awk '{print int($1)+($1>int($1))}')
-      image_list_csv_str+="${page_total_sec_ceil},2,2,${IMAGE_DIR_PATH}image_$(printf "%04d" $page_id).png"$'\n'
+      image_list_csv_str+="${page_total_sec_ceil},2,2,${IMAGE_DIR_PATH}${page_id}.png"$'\n'
       continue
     else
       echo "未対応のtype: $type $arg1 $arg2 $arg3"
