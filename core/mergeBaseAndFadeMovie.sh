@@ -7,7 +7,6 @@ TMP_DIR_PATH=${SCRIPT_DIR_PATH}../data/tmp/tmp/
 # output
 MOVIE_PART_LIST_FILE_PATH=${1:-/tmp/part_list.txt}
 MOVIE_PART_DIR_PATH=${2:-/tmp/__demo_video_creator/}
-echo > $MOVIE_PART_LIST_FILE_PATH
 mkdir -p $MOVIE_PART_DIR_PATH
 
 # input
@@ -44,7 +43,7 @@ cat $CENTER_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fa
     # h264_nvencはアルファチャンネルに対応していない。そのためフェードができなくなった。
     #ffmpeg -y -loop 1 -i $file_path -vf "scale=${center_image_width}:${center_image_height},format=rgba,fade=t=in:st=0:d=${fade_in_sec}:alpha=1,fade=t=out:st=${fade_out_start}:d=${fade_out_sec}:alpha=1,format=yuv420p" -t ${part_sec} -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast $FADE_MOVIE_PATH < /dev/null
     # 右から左に移動する動画パーツ
-    ffmpeg -y -loop 1 -framerate 60 -t ${part_sec} -i "$CENTER_BACKGROUND_IMAGE_FILE_PATH" -i "$file_path" -filter_complex "[0:v][1:v]overlay=x='if(lt(t,${fade_in_sec}),1024-1024*t/2,if(gt(t,${fade_out_start}),-1024*(t-${fade_out_start})/2,0))':y='0',scale=1024:1024" -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast -pix_fmt yuv420p -r 60 $FADE_MOVIE_PATH < /dev/null
+    ffmpeg -y -loop 1 -framerate 60 -t ${part_sec} -i "$CENTER_BACKGROUND_IMAGE_FILE_PATH" -i "$file_path" -filter_complex "[0:v][1:v]overlay=x='if(lt(t,${fade_in_sec}),1024-1024*t/2,if(gt(t,${fade_out_start}),-1024*(t-${fade_out_start})/2,0))':y='0',scale=1024:1024" -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast -r 60 $FADE_MOVIE_PATH < /dev/null
 
     # ベース動画とフェード動画から動画パート作成
     ffmpeg -y -i $BASE_MOVIE_FILE_PATH -i $FADE_MOVIE_PATH -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2:enable='between(t,0,${part_sec})'" -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast $movie_part_file_path < /dev/null
