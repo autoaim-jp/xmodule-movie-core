@@ -84,25 +84,14 @@ ${ROOT_DIR_PATH}app/title_movie.sh "$TMP_TITLE_MOVIE_FILE_PATH" "$TITLE_TEXT" "$
 echo > $TMP_MOVIE_PART_LIST_FILE_PATH
 echo "file '$(realpath ${TMP_TITLE_MOVIE_FILE_PATH})'" >> $TMP_MOVIE_PART_LIST_FILE_PATH
 
-# ベース動画作成
-BASE_MOVIE_FILE_PATH=./__base.mp4
-BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_book_1/bg_004896.png" # 背景画像パス
-output_width=1920                     # 出力動画の幅
-output_height=1080                    # 出力動画の高さ
-ffmpeg -y -i "$BACKGROUND_IMAGE_FILE_PATH" -i "$TELOP_IMAGE_FILE_PATH" \
-  -filter_complex "\
-      [0:v]scale=${output_width}:${output_height}[bg]; \
-      [1:v]scale=380:100[lt]; \
-      [bg][lt]overlay=x=W-w-10:y=20 \
-      " \
-  -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast $BASE_MOVIE_FILE_PATH
-
 # フェード動画作成してマージ
 CENTER_BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_book_1/bg_004896_1024.png" # 中央画像の背景画像パス
 # スライドではなくタイトルと同じフェードにする
 # ${ROOT_DIR_PATH}core/mergeBaseAndFadeMovie.sh $TMP_MOVIE_PART_LIST_FILE_PATH $MOVIE_PART_DIR_PATH $TMP_IMAGE_LIST_FILE_PATH $BASE_MOVIE_FILE_PATH $CENTER_BACKGROUND_IMAGE_FILE_PATH
 
-# スライドではなくタイトルと同じフェードにする
+# スライドではなくタイトルと同じフェードにする mergeBaseAndFadeMovie.shとfadeEffect.shを参考に作成
+BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_book_1/bg_004896.png" # 背景画像パス
+CENTER_BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_book_1/bg_square_004896.png" # 背景画像パス
 n=1
 cat $TMP_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fade_out_sec file_path; do
     # ヘッダ行（#で始まる行）や空行はスキップ
@@ -115,7 +104,18 @@ cat $TMP_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fade_
 
     # fade_out_start=$((part_sec - fade_out_sec))
  
-    ${ROOT_DIR_PATH}core/fadeEffect.sh $movie_part_file_path $file_path $part_sec
+    FADE_OUT_START=$(expr $part_sec \* 60 - 90)
+    ffmpeg -y -i "$BACKGROUND_IMAGE_FILE_PATH" -i "$TELOP_IMAGE_FILE_PATH" -loop 1 -framerate 60 -i "$file_path" \
+      -filter_complex "\
+          [0:v]scale=1920:1080[bg]; \
+          [1:v]scale=380:100[lt]; \
+          [2:v]scale=1024:1024,fade=in:0:30:alpha=1,fade=out:${FADE_OUT_START}:30:alpha=1,format=yuva420p[main]; \
+          [bg][lt]overlay=x=W-w-10:y=20[bg_lt]; \
+          [bg_lt][main]overlay=x=(1920-w)/2:y=(1080-h)/2[out]" \
+      -map "[out]" -t "${part_sec}" \
+      -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast "$movie_part_file_path" < /dev/null
+
+
     # 結合するファイル一覧にファイルパス追加
     echo "file '${movie_part_file_path}'" >> $TMP_MOVIE_PART_LIST_FILE_PATH
     
