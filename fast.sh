@@ -43,6 +43,7 @@ TITLE_TEXT=${5} # 動画のタイトル
 TITLE_IMAGE_FILE_PATH=${6} # 動画の表紙画像
 TITLE_MOVIE_SEC=${7} # タイトル画面の秒数
 TELOP_IMAGE_FILE_PATH=${8} # 右上のテロップ画像
+ENDING_FILE_INDEX=${9:--1} # エンデイングファイルの指定
 
 
 # tmp
@@ -63,9 +64,9 @@ mkdir -p $MOVIE_PART_DIR_PATH
 
 cleanup() {
   echo "${SCRIPT_NAME}: Cleaning up temporary files..."
-  echo "消さない $TMP_DIR_PATH"
+  # echo "消さない $TMP_DIR_PATH"
   # google-chrome $TMP_DIR_PATH
-  # rm -rf "$TMP_DIR_PATH"
+  rm -rf "$TMP_DIR_PATH"
 }
 
 # スクリプト終了時・異常終了時に cleanup を実行
@@ -133,11 +134,24 @@ for pid in "${pids[@]}"; do
 done
 
 
-# 結合ファイル一覧に、エンディング動画のファイルパスを記載
-LOGO_ROTATE_MOVIE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/fast/0520_reencoded.mp4"
-echo "file '$(realpath ${LOGO_ROTATE_MOVIE_FILE_PATH})'" >> $TMP_MOVIE_PART_LIST_FILE_PATH
+ending_file_list=(
+  "0520_reencoded.mp4"
+  "0520_reverse_reencoded.mp4"
+  "0729_reencoded.mp4"
+  "0729_reverse_reencoded.mp4"
+  "0730_reencoded.mp4"
+  "0730_reverse_reencoded.mp4"
+)
 
-cat $TMP_MOVIE_PART_LIST_FILE_PATH
+# ランダムに1つ選択
+if [[ $ENDING_FILE_INDEX -ge 0 && $ENDING_FILE_INDEX -lt ${#ending_file_list[@]} ]]; then
+  random_index=$ENDING_FILE_INDEX
+else
+  random_index=$((RANDOM % ${#ending_file_list[@]}))
+fi
+LOGO_ROTATE_MOVIE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/fast/${ending_file_list[$random_index]}"
+# 結合ファイル一覧に、エンディング動画のファイルパスを記載
+echo "file '$(realpath ${LOGO_ROTATE_MOVIE_FILE_PATH})'" >> $TMP_MOVIE_PART_LIST_FILE_PATH
 
 # ファイル一覧から結合
 # 以下はfastConcat.shにより不要
@@ -145,6 +159,7 @@ cat $TMP_MOVIE_PART_LIST_FILE_PATH
 
 ${ROOT_DIR_PATH}core/fastConcat.sh $OUTPUT_MOVIE_FILE_PATH $TMP_SUBTITLE_FILE_PATH $FONT_FILE_PATH $SUBTITLE_MODE $TMP_MOVIE_PART_LIST_FILE_PATH $TMP_SOUND_FILE_PATH
 
+# google-chrome "$OUTPUT_MOVIE_FILE_PATH"
 
-google-chrome "$OUTPUT_MOVIE_FILE_PATH"
+echo "${SCRIPT_NAME}: complete."
 
