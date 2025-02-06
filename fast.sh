@@ -92,8 +92,11 @@ CENTER_BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_bo
 # スライドではなくタイトルと同じフェードにする mergeBaseAndFadeMovie.shとfadeEffect.shを参考に作成
 BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_book_1/bg_004896.png" # 背景画像パス
 CENTER_BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_book_1/bg_square_004896.png" # 背景画像パス
+
 n=1
-cat $TMP_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fade_out_sec file_path; do
+declare -a pids
+# `cat` を使わず、`while` ループを `< ファイル` の形で実行する
+while IFS=',' read -r part_sec fade_in_sec fade_out_sec file_path; do
     # ヘッダ行（#で始まる行）や空行はスキップ
     if [[ -z "$part_sec" || "$part_sec" == \#* ]]; then
         continue
@@ -102,9 +105,8 @@ cat $TMP_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fade_
     # パート動画のファイルパス 絶対パス
     movie_part_file_path=$(realpath ${MOVIE_PART_DIR_PATH}part_$(printf "%04d" $n).mp4)
 
-    # fade_out_start=$((part_sec - fade_out_sec))
- 
     FADE_OUT_START=$(expr $part_sec \* 60 - 90)
+
     ffmpeg -y -i "$BACKGROUND_IMAGE_FILE_PATH" -i "$TELOP_IMAGE_FILE_PATH" -loop 1 -framerate 60 -i "$file_path" \
       -filter_complex "\
           [0:v]scale=1920:1080[bg]; \
@@ -113,14 +115,21 @@ cat $TMP_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fade_
           [bg][lt]overlay=x=W-w-10:y=20[bg_lt]; \
           [bg_lt][main]overlay=x=(1920-w)/2:y=(1080-h)/2[out]" \
       -map "[out]" -t "${part_sec}" \
-      -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast "$movie_part_file_path" < /dev/null
+      -r 60 -s 1920x1080 -c:v h264_nvenc -b:v 4M -maxrate 6M -bufsize 8M -preset slow -profile:v high -rc-lookahead 32 -preset fast "$movie_part_file_path" < /dev/null &
 
+    # プロセスIDを格納
+    pids+=($!)
 
     # 結合するファイル一覧にファイルパス追加
     echo "file '${movie_part_file_path}'" >> $TMP_MOVIE_PART_LIST_FILE_PATH
-    
+
     # カウントアップ
     ((n++))
+done < "$TMP_IMAGE_LIST_FILE_PATH"  # ★ cat を使わずに、ループの入力にファイルを指定することでサブシェルを回避
+
+# すべてのバックグラウンドプロセスの終了を待つ
+for pid in "${pids[@]}"; do
+    wait "$pid"
 done
 
 

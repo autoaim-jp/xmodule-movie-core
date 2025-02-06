@@ -158,7 +158,7 @@ while IFS=',' read -r type arg1 arg2 arg3; do
   wav_file_sec=$(soxi -D $output_file_path)
   current_total_sec=$(echo "$last_total_sec + $wav_file_sec" | bc)
   # image_list.csv用ロジック
-  page_total_sec=$(echo "$page_total_sec + $wav_file_sec + 0.15" | bc) # 0.15秒追加は微調整
+  page_total_sec=$(echo "$page_total_sec + $wav_file_sec + 0.40" | bc) # 0.40秒追加は微調整
   echo $wav_file_sec $output_file_path
 
   if [[ $type == "speak" ]]; then
