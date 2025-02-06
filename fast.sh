@@ -55,6 +55,7 @@ TMP_TITLE_MOVIE_FILE_PATH="${TMP_DIR_PATH}__title_movie.mp4"
 TMP_MAIN_PART_MOVIE_FILE_PATH="${TMP_DIR_PATH}main.mp4"
 TMP_MOVIE_PART_LIST_FILE_PATH="${TMP_DIR_PATH}part_list.txt"
 MOVIE_PART_DIR_PATH="${TMP_DIR_PATH}movie_part/"
+mkdir -p $MOVIE_PART_DIR_PATH
 #echo "デバッグ 毎回同じもの作らなくていい"
 #TMP_MOVIE_PART_LIST_FILE_PATH="./__part_list.txt"
 #MOVIE_PART_DIR_PATH="./__movie_part/"
@@ -62,9 +63,9 @@ MOVIE_PART_DIR_PATH="${TMP_DIR_PATH}movie_part/"
 
 cleanup() {
   echo "${SCRIPT_NAME}: Cleaning up temporary files..."
-  # echo "消さない $TMP_DIR_PATH"
+  echo "消さない $TMP_DIR_PATH"
   # google-chrome $TMP_DIR_PATH
-  rm -rf "$TMP_DIR_PATH"
+  # rm -rf "$TMP_DIR_PATH"
 }
 
 # スクリプト終了時・異常終了時に cleanup を実行
@@ -98,11 +99,36 @@ ffmpeg -y -i "$BACKGROUND_IMAGE_FILE_PATH" -i "$TELOP_IMAGE_FILE_PATH" \
 
 # フェード動画作成してマージ
 CENTER_BACKGROUND_IMAGE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/children_book_1/bg_004896_1024.png" # 中央画像の背景画像パス
-${ROOT_DIR_PATH}core/mergeBaseAndFadeMovie.sh $TMP_MOVIE_PART_LIST_FILE_PATH $MOVIE_PART_DIR_PATH $TMP_IMAGE_LIST_FILE_PATH $BASE_MOVIE_FILE_PATH $CENTER_BACKGROUND_IMAGE_FILE_PATH
+# スライドではなくタイトルと同じフェードにする
+# ${ROOT_DIR_PATH}core/mergeBaseAndFadeMovie.sh $TMP_MOVIE_PART_LIST_FILE_PATH $MOVIE_PART_DIR_PATH $TMP_IMAGE_LIST_FILE_PATH $BASE_MOVIE_FILE_PATH $CENTER_BACKGROUND_IMAGE_FILE_PATH
+
+# スライドではなくタイトルと同じフェードにする
+n=1
+cat $TMP_IMAGE_LIST_FILE_PATH | while IFS=',' read -r part_sec fade_in_sec fade_out_sec file_path; do
+    # ヘッダ行（#で始まる行）や空行はスキップ
+    if [[ -z "$part_sec" || "$part_sec" == \#* ]]; then
+        continue
+    fi
+
+    # パート動画のファイルパス 絶対パス
+    movie_part_file_path=$(realpath ${MOVIE_PART_DIR_PATH}part_$(printf "%04d" $n).mp4)
+
+    # fade_out_start=$((part_sec - fade_out_sec))
+ 
+    ${ROOT_DIR_PATH}core/fadeEffect.sh $movie_part_file_path $file_path $part_sec
+    # 結合するファイル一覧にファイルパス追加
+    echo "file '${movie_part_file_path}'" >> $TMP_MOVIE_PART_LIST_FILE_PATH
+    
+    # カウントアップ
+    ((n++))
+done
+
 
 # 結合ファイル一覧に、エンディング動画のファイルパスを記載
 LOGO_ROTATE_MOVIE_FILE_PATH="${ROOT_DIR_PATH}asset/src/project/fast/0520_reencoded.mp4"
 echo "file '$(realpath ${LOGO_ROTATE_MOVIE_FILE_PATH})'" >> $TMP_MOVIE_PART_LIST_FILE_PATH
+
+cat $TMP_MOVIE_PART_LIST_FILE_PATH
 
 # ファイル一覧から結合
 # 以下はfastConcat.shにより不要
