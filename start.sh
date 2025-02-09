@@ -15,5 +15,13 @@
 
 # ./main_capture.sh ./asset/src/project/event2/result.mp4 ${PWD}/asset/src/project/event2/narration.csv "生成AIで図を作成するツールの紹介" ${PWD}/asset/src/project/event2/title.png "-" ${PWD}/asset/src/project/event2/concat.mp4 "voicepeak" | tee log/20250128_event2.log
 
-./fast.sh ./data/result/fast.mp4 ./asset/src/project/fast/image/ ./asset/src/project/children_book_4/narration.csv voicepeak "fast_test" ./asset/src/project/children_book_1/title.webp 6 ./asset/src/project/fast/telop.png -1
+# ./fast.sh ./data/result/fast.mp4 ./asset/src/project/fast/image/ ./asset/src/project/children_book_4/narration.csv voicepeak "fast_test" ./asset/src/project/children_book_1/title.webp 6 ./asset/src/project/fast/telop.png -1
+
+
+IMAGE_DIR_PATH=./asset/src/project/fast/image/
+TMP_SOUND_FILE_PATH="/tmp/__speak_sound.wav"
+TMP_SUBTITLE_FILE_PATH="/tmp/__subtitle.csv"
+TMP_IMAGE_LIST_FILE_PATH="/tmp/__image_list.csv"
+./fast_part1.sh $TMP_SOUND_FILE_PATH $TMP_SUBTITLE_FILE_PATH $TMP_IMAGE_LIST_FILE_PATH $IMAGE_DIR_PATH ./asset/src/project/children_book_4/narration.csv voicepeak
+./fast_part2.sh ./data/result/fast.mp4 $TMP_SOUND_FILE_PATH $TMP_SUBTITLE_FILE_PATH $TMP_IMAGE_LIST_FILE_PATH $IMAGE_DIR_PATH "fast_test" ./asset/src/project/children_book_1/title.webp 6 ./asset/src/project/fast/telop.png -1
 
