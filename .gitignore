@@ -19,3 +19,6 @@ log/
 !asset/src/project/children_book_1/bg_004896_1024.png
 !asset/src/project/children_book_1/bg_004896.png
 
+!asset/src/project/fast/*.mp4
+!asset/src/project/fast/telop.png
+
